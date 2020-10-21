@@ -85,3 +85,4 @@
 	* followed_id(INT)
 	* following_id(INT)
 
+## gitの運用ルール
