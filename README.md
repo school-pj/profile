@@ -71,7 +71,7 @@
 
 ## 【データベース】
 
-### DB名:ProfileApp
+### DB名:profileapp
 ※DB接続情報は統一する
 
 ### テーブル
