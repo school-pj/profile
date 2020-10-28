@@ -1,13 +1,32 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+//var passport = require('passport'); // 追記
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var loginRouter = require('./routes/login');
+var flash = require("connect-flash");//メッセージ表示
+var bodyParser = require("body-parser");//認証情報の保存
+var cookieParser = require('cookie-parser');//認証情報の保存
+var session = require('express-session');//認証情報の保存
+var passport = require('passport');//passport.jsのコア機能
+var sessionStore = new session.MemoryStore;
 
 var app = express();
+
+//　セッション情報設定 追加部分ここから                                                                                               
+app.use(cookieParser('secret'));
+app.use(session({
+    cookie: { maxAge: 60000 },
+    store: sessionStore,
+    saveUninitialized: true,
+    resave: 'true',
+    secret: 'secret'
+}));
+
+app.use(flash());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -18,9 +37,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(...loginRouter.initialize());//配列をカンマ区切りで割り当て
+app.use(bodyParser.json());
+app.use(passport.initialize());
+app.use(passport.session());
+//app.use(passport.initialize());// 追加
+//app.use(passport.session());// 追加
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+//app.use('/login', loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
