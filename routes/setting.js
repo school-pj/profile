@@ -25,16 +25,18 @@ router.post('/', function(req, res, next) {
   var password = req.body.password;
   var confirm = req.body.confirm;
 
-
+console.log("before_barridate");
     //バリデート処理
   if(password !== confirm){
-    res.render('signup',{
+    console.log("barridate");
+    res.render('setting',{
         title: "アカウント設定",
         pass: 'パスワードが一致しません'
     });
     return;
   }
   
+  //セッションで持っているidのカラムを書き換えるupdateに直す
   knex.insert({ username, password: username, password }).into('users').then(function (rows) {
       //セッティングページにリダイレクト
       res.redirect('/setting');
