@@ -15,9 +15,6 @@ var knex = require('knex')({
 });
 
 
-
-
-
 //サーバからクライアントに保存する処理
 //username　localstrategyのdoneで渡されるキー情報
 //serializeUserの第一引数に第一引数にわたる。
@@ -73,6 +70,9 @@ authenticate = function () {
   }
   );
 };
+
+
+
 
 module.exports = {
   initialize,

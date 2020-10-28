@@ -16,22 +16,40 @@ var knex = require('knex')({
 /* GET home page. */
 router.get('/', function (req, res, next) {
   //usernameとpasswordに関しては、セッションから持ってくるように実装
-  var content = req.body.content;
-  if (req.session.username) {
-    res.render('index', { title: 'ProfileApp' }, { username: req.body.session });
+  // var content = req.body.content;
+  if (req.session.user_name) {
+    res.render('index', { title: 'ProfileApp' , user_name: req.session.user_name });
+
+  //   knex.insert({ content: content })
+  //     .into('users')
+  //     .then(function (rows) {
+  //       console.log(rows[0]);
+  //     })
+  //     .catch(function (error) {
+  //       console.error(error)
+  //     });
+  // } else {
+  //   res.redirect("login");
+   }
+});
+
+router.post("/", (req,res,next) => {
+  let content = req.body.content;
 
     knex.insert({ content: content })
       .into('users')
       .then(function (rows) {
         console.log(rows[0]);
+        res.render("/");
       })
       .catch(function (error) {
-        console.error(error)
+        console.error(error);
+        res.render("/");
       });
-  } else {
-    res.redirect("login");
-  }
+
 });
+
+
 
 router.get("/login", (req, res, next) => {
   res.render("login", { message: req.flash("message") });

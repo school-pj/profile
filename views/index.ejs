@@ -2,7 +2,7 @@
 <html>
 
   <head>
-    <title>TodoList</title>
+    <title>ProfileApp</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
 
@@ -11,13 +11,12 @@
   </body>
   <div class="wrapper">
     <form action="/" method="post" class="task-form">
-      <p><%= username %></p>
-      <form action="/users/user_id">View My Profile</form>
-      <form action="/users/user_id/follows">フォロー数：<%= follow ></form>
-    <from action="/users/user_id/followers">フォロワー数：<%= follower ></from>
+      <p><%= user_name %></p>
+      <a href="/users/user_id">View My Profile</a>
+      
     <p>自己紹介文<br>
       <textarea name="content" cols="30" rows="5"></textarea></p>
-      <button type="submit" class="submit">登録</button>
+      <button type="submit" class="submit">投稿</button>
   </form>
 </div>
 </html>
