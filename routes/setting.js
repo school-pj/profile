@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var { authenticate } = require("./login");
+
 var knex = require('knex')({
   client: 'mysql',
   connection: {
@@ -11,12 +13,15 @@ var knex = require('knex')({
   useNullAsDefault: true
 });
 
-
-
 router.get('/', function(req, res, next) {
-  res.render('setting', {
-    title: 'アカウント設定'
-  });
+  if (req.session.user_name) {
+    //TODO : sessionにidが今のところないので、dbの更新すべきデータが逆引きできない？
+  res.render('setting', {title: 'アカウント設定' , user_name: req.session.user_name});
+    console.log(user_name);
+}
+  else {
+        res.redirect("login");
+  }
 });
 
 
@@ -25,18 +30,17 @@ router.post('/', function(req, res, next) {
   var password = req.body.password;
   var confirm = req.body.confirm;
 
-console.log("before_barridate");
     //バリデート処理
   if(password !== confirm){
-    console.log("barridate");
     res.render('setting',{
         title: "アカウント設定",
         pass: 'パスワードが一致しません'
+
     });
     return;
   }
-  
-  //セッションで持っているidのカラムを書き換えるupdateに直す
+
+  //TODO : セッションで持っているidのカラムを書き換えるupdateに直す
   knex.insert({ username, password: username, password }).into('users').then(function (rows) {
       //セッティングページにリダイレクト
       res.redirect('/setting');
@@ -47,7 +51,6 @@ console.log("before_barridate");
       console.error(error)
     });
 });
-
 
 
 module.exports = router;
