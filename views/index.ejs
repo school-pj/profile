@@ -11,14 +11,9 @@
   </body>
   <div class="wrapper">
     <form action="/" method="post" class="task-form">
-    <p><%= if(!user){ %>
-             <form action="/signup"></form>
-       <%= }else{ %> 
-             <%= username %>
-       <%= }; %>
-    </p>
-    <form action="/users/user_id">View My Profile</form>
-    <form action="/users/user_id/follows">フォロー数：<%= follow ></form>
+      <p><%= username %></p>
+      <form action="/users/user_id">View My Profile</form>
+      <form action="/users/user_id/follows">フォロー数：<%= follow ></form>
     <from action="/users/user_id/followers">フォロワー数：<%= follower ></from>
     <p>自己紹介文<br>
       <textarea name="content" cols="30" rows="5"></textarea></p>
@@ -26,12 +21,3 @@
   </form>
 </div>
 </html>
-
-ログイン済み
-ユーザー名
-自分のプロフィールページへのリンク(View My Profile
-フォローユーザー数(フォローユーザー名一覧のリンク
-フォロワーユーザー数(フォロワーユーザー名一覧のリンク
-自己紹介文
-自己紹介文入力フォーム
-|-投稿(更新)ボタン(Update
