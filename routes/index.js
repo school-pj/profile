@@ -13,6 +13,8 @@ var knex = require('knex')({
   useNullAsDefault: true
 });
 
+//未ログイン時はSignupへ飛ぶ処理「Welcome Twiter」みたいな感じにする。
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   //usernameとpasswordに関しては、セッションから持ってくるように実装
@@ -30,11 +32,20 @@ router.get('/', function (req, res, next) {
   //     });
   // } else {
   //   res.redirect("login");
+   }else{
+    //  let test = "";
+    //  if(req.session.user_name){
+    //   test = true;
+    //  }else{
+    //    test = false;
+    //  };
+    //  console.log(test);
+    res.render('index', { title: 'Welcome to ProfileApp' , user_name: req.session.user_name });
    }
 });
 
 router.post("/", (req,res,next) => {
-  let content = req.body.content;
+  const content = req.body.content;
 
     knex.insert({ content: content })
       .into('users')

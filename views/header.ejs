@@ -4,6 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <% if (user_name) { %>
     <input type="button" onclick="location.href='index'" value="Top Page">
     <input type="button" onclick="location.href='users'" value="All Users">
     <select onChange="location.href=value;">
@@ -12,6 +13,11 @@
       <option value="setting">Setting</option>
       <option value="logout">Logout</option>
     </select>
+    <% }else{ %>
+      <form action="/login" method="post" class="task-form">
+        <button type="submit" class="submit">Login</button>
+      </form>
+    <% } %>
   </head>
 
   </body>
