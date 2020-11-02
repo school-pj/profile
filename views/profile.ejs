@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include('header',{user_name: user_name, password: password}) %>
+  <title>My profile</title>
+</head>
+<body>
+  <p><%=user_name %>さんのプロフィール</p>
+  <div class="wrapper">
+    <ul class="main-task">
+      <% contentList.forEach(function(contentItem) { %>
+          <li class="main-list__task">
+              <div class="task">
+                  <p class="task__content"><%= contentItem.content %></p>
+              </div>
+          </li>
+      <% }); %>
+  </ul>
+</div>
+</body>
+</html>
