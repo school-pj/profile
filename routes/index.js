@@ -58,14 +58,14 @@ router.post("/", (req,res,next) => {
 });
 
 
-//ログイン
+//ログイン処理
 router.get("/login", (req, res, next) => {
   res.render("login", { message: req.flash("message") , user_name: req.session.user_name, password: req.session.password});
 });
 
 router.post("/login", authenticate());
 
-//ログアウト
+//ログアウト処理
 router.get("/logout", function(req, res, next) {
   req.session.destroy(function(err) {
     if(err) {
