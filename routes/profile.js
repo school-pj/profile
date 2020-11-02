@@ -11,7 +11,7 @@ var knex = require('knex')({
   useNullAsDefault: true
 });
 
-//View My Profileを押下された時の処理
+//View My Profileを押下時の処理
 router.get('/', function (req, res, next) {
   //res.render("/profile/user_id");
   knex
@@ -26,7 +26,7 @@ router.get('/', function (req, res, next) {
 });
 
 
-//View My Profileを押下された時の処理
+//View My Profileを押下時の処理
 router.post('/', function (req, res, next) {
   res.render("/profile/user_id");
 });
