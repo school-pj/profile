@@ -19,7 +19,7 @@ var knex = require('knex')({
 });
 
 //View My Profileを押下時の処理
-router.get('/:id', function (req, res, next) {
+router.get('/', function (req, res, next) {
   //res.render("/profile/user_id");
   knex
     .select()
@@ -34,7 +34,7 @@ router.get('/:id', function (req, res, next) {
 
 
 //View My Profileを押下時の処理
-router.post('/:id', function (req, res, next) {
+router.post('/', function (req, res, next) {
   res.render("profile");
 });
 
