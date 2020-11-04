@@ -26,7 +26,7 @@ router.get('/', function (req, res, next) {
       console.log("成功");
       console.log(rows);
       console.log(req.session.user_name + " " + req.session.password);
-      res.render('index', { title: 'ProfileApp' , user_name: req.session.user_name , password: req.session.password, contentList: rows});
+      res.render('index', { title: 'ProfileApp' , user_name: req.session.user_name , password: req.session.password, contentList: rows,id: req.session.id});
   })
     .catch(function(error) {
     console.error(error)
@@ -60,7 +60,7 @@ router.post("/", (req,res,next) => {
 
 //ログイン処理
 router.get("/login", (req, res, next) => {
-  res.render("login", { message: req.flash("message") , user_name: req.session.user_name, password: req.session.password});
+  res.render("login", { message: req.flash("message") , user_name: req.session.user_name, password: req.session.password, id: req.session.id});
 });
 
 router.post("/login", authenticate());

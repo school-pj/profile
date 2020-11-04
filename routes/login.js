@@ -42,12 +42,13 @@ passport.use("local-strategy",
     //knex記述処理
     //SQL文：select * from user where username = username, password = password;
     knex("users")
-      .where({ user_name, password: user_name, password })
+      .where({ id, user_name, password: user_name, password })
       .then(function (rows) {
         //成功
         if (rows.length != 0) {
           req.session.user_name = user_name;
           req.session.password = password;
+          req.session.id = id;
           console.log(user_name);
           done(null,user_name);
           //エラー(フラッシュメッセージ)
