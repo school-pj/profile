@@ -20,60 +20,59 @@ router.get('/', function (req, res, next) {
   //usernameとpasswordに関しては、セッションから持ってくるように実装
   if (req.session.user_name) {
     knex
-    .select()
-    .from('users')
-    .then(function(rows) {
-      console.log("成功");
-      console.log(rows);
-      console.log(req.session.user_name + " " + req.session.password);
-      res.render('index', { title: 'ProfileApp' , user_name: req.session.user_name, contentList: rows});
-  })
-    .catch(function(error) {
-    console.error(error)
-  });
-   }else{
-    res.render('index', { title: 'Welcome to ProfileApp',user_name: req.session.user_name}); 
-   }
+      .select()
+      .from('users')
+      .then(function (rows) {
+        console.log("成功");
+        console.log(rows);
+        console.log(req.session.user_name + " " + req.session.password);
+        res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows });
+      })
+      .catch(function (error) {
+        console.error(error)
+      });
+  } else {
+    res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name });
+  }
 });
 
-router.post("/", (req,res,next) => {
+router.post("/", (req, res, next) => {
   console.log("成功");
   const user_name = req.session.user_name;
   const password = req.session.password;
   const content = req.body.content;
   console.log(content);
+  knex('users')
+    .where({ user_name, password: user_name, password })
+    .update({ content: content })
+    .then(function (rows) {
+      console.log(rows[0]);
+      res.redirect("/");
+    })
+    .catch(function (error) {
+      console.error(error);
 
-    knex.insert({ user_name,password,content: user_name,password,content })
-      .into('users')
-      .then(function (rows) {
-        console.log(rows[0]);
-        res.redirect("/");
-      })
-      .catch(function (error) {
-        console.error(error);
-
-        res.redirect("/");
-      });
-
+      res.redirect("/");
+    });
 });
 
 
 //ログイン処理
 router.get("/login", (req, res, next) => {
-  res.render("login", { message: req.flash("message") , user_name: req.session.user_name});
+  res.render("login", { message: req.flash("message"), user_name: req.session.user_name });
 });
 
 router.post("/login", authenticate());
 
 //ログアウト処理
-router.get("/logout", function(req, res, next) {
-  req.session.destroy(function(err) {
-    if(err) {
-        console.log(err);
+router.get("/logout", function (req, res, next) {
+  req.session.destroy(function (err) {
+    if (err) {
+      console.log(err);
     } else {
-       res.redirect("/");
+      res.redirect("/");
     }
-});
+  });
 });
 
 module.exports = router;
