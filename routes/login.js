@@ -42,7 +42,7 @@ passport.use("local-strategy",
     //knex記述処理
     //SQL文：select * from user where username = username, password = password;
     knex("users")
-      .where({ user_name, password: user_name, password })
+      .where({user_name, password: user_name, password })
       .then(function (rows) {
         //成功
         if (rows.length != 0) {
