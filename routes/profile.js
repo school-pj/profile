@@ -1,3 +1,10 @@
+// ・ユーザー名
+// ・フォローユーザー数(フォローユーザー名一覧のリンク 
+// ・フォロワーユーザー数(フォロワーユーザー名一覧のリンク
+// ・自己紹介文
+// ・フォローする処理、フォロー解除する処理
+// ・ログイン時にログインしたユーザーのuserIDをセッションに保持しておく。
+
 var express = require('express');
 var router = express.Router();
 var knex = require('knex')({
@@ -11,7 +18,7 @@ var knex = require('knex')({
   useNullAsDefault: true
 });
 
-//View My Profileを押下された時の処理
+//View My Profileを押下時の処理
 router.get('/', function (req, res, next) {
   //res.render("/profile/user_id");
   knex
@@ -26,9 +33,9 @@ router.get('/', function (req, res, next) {
 });
 
 
-//View My Profileを押下された時の処理
+//View My Profileを押下時の処理
 router.post('/', function (req, res, next) {
-  res.render("/profile/user_id");
+  res.render("profile");
 });
 
 

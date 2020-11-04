@@ -26,13 +26,13 @@ router.get('/', function (req, res, next) {
         console.log("成功");
         console.log(rows);
         console.log(req.session.user_name + " " + req.session.password);
-        res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows });
+        res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, password: req.session.password, contentList: rows, id: req.session.id });
       })
       .catch(function (error) {
         console.error(error)
       });
   } else {
-    res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name });
+    res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name, password: req.session.password });
   }
 });
 
@@ -42,6 +42,7 @@ router.post("/", (req, res, next) => {
   const password = req.session.password;
   const content = req.body.content;
   console.log(content);
+
   knex('users')
     .where({ user_name, password: user_name, password })
     .update({ content: content })
@@ -54,12 +55,13 @@ router.post("/", (req, res, next) => {
 
       res.redirect("/");
     });
+
 });
 
 
 //ログイン処理
 router.get("/login", (req, res, next) => {
-  res.render("login", { message: req.flash("message"), user_name: req.session.user_name });
+  res.render("login", { message: req.flash("message"), user_name: req.session.user_name, password: req.session.password, id: req.session.id });
 });
 
 router.post("/login", authenticate());

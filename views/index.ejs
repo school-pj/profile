@@ -4,7 +4,7 @@
   <head>
     <title>ProfileApp</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <%- include('header',{user_name: user_name}) %>
+    <%- include('header',{user_name: user_name, password: password}) %>
   </head>
 
   <body>
@@ -14,26 +14,18 @@
   <div class="wrapper">
     <form action="/" method="post" class="task-form">
       <p><%= user_name %></p>
-      <a href="profile">View My Profile</a>
+      <a href="/profile">View My Profile</a>
       <p>自己紹介文<br>
-      <textarea name="content" cols="30" rows="5"></textarea></p>
+        <textarea name="content" cols="30" rows="5"></textarea></p>
       <button type="submit" class="submit">投稿</button>
-      <div class="wrapper">
-        <ul class="main-task">
-          <% contentList.forEach(function(contentItem) { %>
-              <li class="main-list__task">
-                  <div class="task">
-                      <p class="task__content"><%= contentItem.content %></p>
-                  </div>
-              </li>
-          <% }); %>
-      </ul>
-    </div>
-  </form>
-  <% }else{ %>
-    <form action="/signup" method="post" class="task-form">
+    </form>
+    <br>
+    <textarea readonly name="content" cols="50" rows="10"><%= contentList[0].content %></textarea>
+    <% }else{ %>
+    <form action="/signup" method="get" class="task-form">
       <button type="submit" class="submit">Sign up</button>
     </form>
-  <% } %>
-</div>
+    <% } %>
+  </div>
+
 </html>
