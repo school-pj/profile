@@ -42,8 +42,8 @@ router.post("/", (req, res, next) => {
   const password = req.session.password;
   const content = req.body.content;
   console.log(content);
-
-  knex('users')
+  if(content != null){
+    knex('users')
     .where({ user_name, password: user_name, password })
     .update({ content: content })
     .then(function (rows) {
@@ -55,6 +55,9 @@ router.post("/", (req, res, next) => {
 
       res.redirect("/");
     });
+  }else{
+    res.redirect("/");
+  }
 
 });
 
