@@ -26,7 +26,7 @@ router.get('/', function (req, res, next) {
         console.log("成功");
         console.log(rows);
         console.log(req.session.user_name + " " + req.session.password);
-        res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, password: req.session.password, contentList: rows, id: req.session.id });
+        res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, password: req.session.password, contentList: rows});
       })
       .catch(function (error) {
         console.error(error)

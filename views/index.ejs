@@ -14,7 +14,13 @@
   <div class="wrapper">
     <form action="/" method="post" class="task-form">
       <p><%= user_name %></p>
-      <a href="/profile">View My Profile</a>
+      <script>
+        var id = req.session.id;
+        function jump() {
+          window.location.href = '/profile/' + id;
+        }
+      </script>
+      <a href="javascript:void(0);" onclick="jump();">View My Profile</a>
       <p>自己紹介文<br>
         <textarea name="content" cols="30" rows="5"></textarea></p>
       <button type="submit" class="submit">投稿</button>

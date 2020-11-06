@@ -48,7 +48,9 @@ passport.use("local-strategy",
         if (rows.length != 0) {
           req.session.user_name = user_name;
           req.session.password = password;
-          console.log(user_name);
+          console.log(rows[0].id);
+          req.session.id = rows[0].id;
+          console.log(req.session.id);
           done(null,user_name);
           //エラー(フラッシュメッセージ)
         } else {
