@@ -37,6 +37,7 @@ passport.use("local-strategy",
     knex("users")
       .where({user_name, password: user_name, password })
       .then(function (rows) {
+        //成功
         if (rows.length !== 0) {
           req.session.user_name = user_name;
           req.session.password = password;
