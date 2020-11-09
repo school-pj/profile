@@ -13,11 +13,8 @@ var knex = require('knex')({
   useNullAsDefault: true
 });
 
-//未ログイン時はSignupへ飛ぶ処理「Welcome Twiter」みたいな感じにする。
-
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  //usernameとpasswordに関しては、セッションから持ってくるように実装
   if (req.session.user_name) {
     knex
     .select()
