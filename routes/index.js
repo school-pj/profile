@@ -18,88 +18,63 @@ var knex = require('knex')({
 /* GET home page. */
 router.get('/', function (req, res, next) {
   //usernameとpasswordに関しては、セッションから持ってくるように実装
-  // var content = req.body.content;
   if (req.session.user_name) {
-    res.render('index', { title: 'ProfileApp' , user_name: req.session.user_name });
-
-  //   knex.insert({ content: content })
-  //     .into('users')
-  //     .then(function (rows) {
-  //       console.log(rows[0]);
-  //     })
-  //     .catch(function (error) {
-  //       console.error(error)
-  //     });
-  // } else {
-  //   res.redirect("login");
-   }else{
-    //  let test = "";
-    //  if(req.session.user_name){
-    //   test = true;
-    //  }else{
-    //    test = false;
-    //  };
-    //  console.log(test);
-    res.render('index', { title: 'Welcome to ProfileApp' , user_name: req.session.user_name });
-   }
-});
-
-router.post("/", (req,res,next) => {
-  const content = req.body.content;
-
-    knex.insert({ content: content })
-      .into('users')
+    knex
+      .select()
+      .from('users')
       .then(function (rows) {
-        console.log(rows[0]);
-        res.render("/");
+        console.log("成功");
+        console.log(rows);
+        console.log(req.session.user_name + " " + req.session.password);
+        res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, password: req.session.password, contentList: rows, id: req.session.id });
       })
       .catch(function (error) {
-        console.error(error);
-        res.render("/");
+        console.error(error)
       });
+  } else {
+    res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name, password: req.session.password });
+  }
+});
+
+router.post("/", (req, res, next) => {
+  console.log("成功");
+  const user_name = req.session.user_name;
+  const password = req.session.password;
+  const content = req.body.content;
+  console.log(content);
+
+  knex('users')
+    .where({ user_name, password: user_name, password })
+    .update({ content: content })
+    .then(function (rows) {
+      console.log(rows[0]);
+      res.redirect("/");
+    })
+    .catch(function (error) {
+      console.error(error);
+
+      res.redirect("/");
+    });
 
 });
 
 
-
+//ログイン処理
 router.get("/login", (req, res, next) => {
-  res.render("login", { message: req.flash("message") });
+  res.render("login", { message: req.flash("message"), user_name: req.session.user_name, password: req.session.password, id: req.session.id });
 });
 
 router.post("/login", authenticate());
 
-
-// //View My Profileを押下された時の処理
-// router.post('/users/user_id', function (req, res, next) {
-//   res.render("/user_id")
-// });
-
-// //フォロー数リンクを押下された時の処理
-// router.post('/users/user_id/follows', function (req, res, next) {
-//   var user = req.body.title;
-//   knex.insert({ title, content: title, content })
-//     .into('user')
-//     .then(function (rows) {
-//       console.log(rows[0]);
-//     })
-//     .catch(function (error) {
-//       console.error(error)
-//     });
-//   res.redirect('/');
-// });
-
-// //フォロワー数リンクを押下された時の処理
-// router.get('/users/user_id/followers', function (req, res, next) {
-//   knex
-//     .select()
-//     .from('task')
-//     .then(function (rows) {
-//       res.render("todo", { title: "TODOアプリ", taskList: rows })
-//       console.log(rows);
-//     })
-//     .catch(function (error) {
-//       console.error(error)
-//     });
-// });
+//ログアウト処理
+router.get("/logout", function (req, res, next) {
+  req.session.destroy(function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("/");
+    }
+  });
+});
 
 module.exports = router;
