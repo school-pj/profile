@@ -86,3 +86,4 @@
 	* following_id(INT)
 
 ## gitの運用ルール
+本リポジトリのWikiに記載
