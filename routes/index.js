@@ -23,9 +23,6 @@ router.get('/', function (req, res, next) {
     .select()
     .from('users')
     .then(function(rows) {
-      console.log("成功");
-      console.log(rows);
-      console.log(req.session.user_name + " " + req.session.password);
       res.render('index', { title: 'ProfileApp' , user_name: req.session.user_name , password: req.session.password, contentList: rows});
   })
     .catch(function(error) {
@@ -37,16 +34,13 @@ router.get('/', function (req, res, next) {
 });
 
 router.post("/", (req,res,next) => {
-  console.log("成功");
   const user_name = req.session.user_name;
   const password = req.session.password;
   const content = req.body.content;
-  console.log(content);
 
     knex.insert({ user_name,password,content: user_name,password,content })
       .into('users')
       .then(function (rows) {
-        console.log(rows[0]);
         res.redirect("/");
       })
       .catch(function (error) {

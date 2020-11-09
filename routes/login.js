@@ -19,7 +19,6 @@ var knex = require('knex')({
 //username　localstrategyのdoneで渡されるキー情報
 //serializeUserの第一引数に第一引数にわたる。
 passport.serializeUser((user_name,done) => {
-  console.log("シリアライズ");
   done(null,user_name); //この関数でシリアライズして保存される。
 });
 
@@ -27,7 +26,6 @@ passport.serializeUser((user_name,done) => {
 //クライアントからサーバに復元する処理
 //デシリアライズは、シリアライズした情報をプログラムで処理できるように解凍する作業
 passport.deserializeUser((user_name,done) => {
-  console.log("デシリアライズ");
   done(null,user_name);
 });
 
@@ -45,10 +43,9 @@ passport.use("local-strategy",
       .where({user_name, password: user_name, password })
       .then(function (rows) {
         //成功
-        if (rows.length != 0) {
+        if (rows.length !== 0) {
           req.session.user_name = user_name;
           req.session.password = password;
-          console.log(user_name);
           done(null,user_name);
           //エラー(フラッシュメッセージ)
         } else {
