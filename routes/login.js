@@ -16,12 +16,14 @@ var knex = require('knex')({
 
 
 //サーバからクライアントに保存する処理
+
 passport.serializeUser((user_name, done) => {
   done(null, user_name);
 });
 
 
 //クライアントからサーバに復元する処理
+
 passport.deserializeUser((user_name, done) => {
   done(null, user_name);
 });
@@ -29,13 +31,14 @@ passport.deserializeUser((user_name, done) => {
 //ユーザー名とパスワードを利用した認証
 passport.use("local-strategy",
   new LocalStrategy({
+
     usernameField: "username",
     passwordField: "password",
     passReqToCallback: true
   }, (req, user_name, password, done) => {
 
     knex("users")
-      .where({ user_name, password: user_name, password })
+      .where({user_name, password: user_name, password })
       .then(function (rows) {
         //成功
         if (rows.length !== 0) {
