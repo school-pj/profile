@@ -22,7 +22,7 @@ var app = express();
 //　セッション情報設定 追加部分ここから                                                                                               
 app.use(cookieParser('secret'));
 app.use(session({
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 30*24*60*60*1000 },
     store: sessionStore,
     saveUninitialized: true,
     resave: 'true',

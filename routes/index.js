@@ -53,7 +53,7 @@ router.post("/", (req, res, next) => {
 
 //ログイン処理
 router.get("/login", (req, res, next) => {
-  res.render("login", { message: req.flash("message"), user_name: req.session.user_name, password: req.session.password, id: req.session.id });
+  res.render("login", { message: req.flash("message"), user_name: req.session.user_name});
 });
 
 router.post("/login", authenticate());

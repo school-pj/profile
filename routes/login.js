@@ -17,33 +17,33 @@ var knex = require('knex')({
 
 //サーバからクライアントに保存する処理
 passport.serializeUser((user_name,done) => {
-  done(null,user_name); 
+  done(null, user_name);
 });
 
 
 //クライアントからサーバに復元する処理
 passport.deserializeUser((user_name,done) => {
-  done(null,user_name);
+  done(null, user_name);
 });
 
 //ユーザー名とパスワードを利用した認証
 passport.use("local-strategy",
   new LocalStrategy({
-    usernameField: "username", 
-    passwordField: "password", 
-    passReqToCallback: true
-  }, (req, user_name, password, done) => { 
 
-    //knex記述処理
+    usernameField: "username",
+    passwordField: "password",
+    passReqToCallback: true
+  }, (req, user_name, password, done) => {
+
     knex("users")
       .where({user_name, password: user_name, password })
       .then(function (rows) {
         //成功
-        if (rows.length != 0) {
+        if (rows.length !== 0) {
           req.session.user_name = user_name;
           req.session.password = password;
-          req.session.id = rows[0].id;
-          done(null,user_name);
+          req.session.user_id = rows[0].id;
+          done(null, user_name,{user_id: req.session.user_id});
         } else {
           done(null, false, req.flash("message", "ユーザー名 または パスワード が間違っています。"));
         }
