@@ -46,9 +46,6 @@ router.post("/", (req,res,next) => {
 
         res.redirect("/");
       });
-  } else {
-    res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name, password: req.session.password });
-  }
 });
 
 router.post("/", (req, res, next) => {
