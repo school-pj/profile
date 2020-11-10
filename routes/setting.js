@@ -42,7 +42,6 @@ router.post('/', function(req, res, next) {
     return;
   }
 
-  //TODO : セッションで持っているuser_nameのカラムを書き換えるupdateに直す
   //TODO : knexでのupdateの書き方と書き換えたいrowの検索の仕方をしらべる↓動かない
   knex.update({username, password: username, password })
       .into('users')
