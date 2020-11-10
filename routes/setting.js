@@ -15,7 +15,9 @@ var knex = require('knex')({
 
 router.get('/', function(req, res, next) {
   if (req.session.id) {
-    //TODO:user_name名は変更するので不変のidでupdateするカラムを指定すべき?
+    //TODO:user_name名は変更するので不変のidでupdateするrowを指定すべき?
+    //TODO:その場合シリアライズされたidをコード内で利用することになるので方法を調べる
+    //TODO:セッション内にあるuser_nameを使ってupdateしたいrowをwhere検索することは可能
   res.render('setting', {title: 'アカウント設定' ,user_name:req.session.user_name});
 }
   else {
@@ -41,12 +43,12 @@ router.post('/', function(req, res, next) {
   }
 
   //TODO : セッションで持っているuser_nameのカラムを書き換えるupdateに直す
-  //TODO : knexでのupdateの書き方と書き換えたいrowの検索の仕方をしらべる
+  //TODO : knexでのupdateの書き方と書き換えたいrowの検索の仕方をしらべる↓動かない
   knex.update({username, password: username, password })
       .into('users')
-      .where('username',username)
+      .where('user_name',username)
       .then(function (rows) {
-      //TODO:ログインページにリダイレクト、セッションは破棄する
+      //TODO:ログインページにリダイレクト、セッションは破棄する(セッションの破棄方法を調べる)
       res.redirect('/login');
       console.log(rows[0]);
     })
