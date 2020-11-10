@@ -14,10 +14,9 @@ var knex = require('knex')({
 });
 
 router.get('/', function(req, res, next) {
-  if (req.session.user_name) {
-    //TODO : sessionにidが今のところないので、dbの更新すべきデータが逆引きできない？
-  res.render('setting', {title: 'アカウント設定' , user_name: req.session.user_name});
-    console.log(user_name);
+  if (req.session.id) {
+    //TODO:user_name名は変更するので不変のidでupdateするカラムを指定すべき?
+  res.render('setting', {title: 'アカウント設定' ,user_name:req.session.user_name});
 }
   else {
         res.redirect("login");
@@ -31,6 +30,7 @@ router.post('/', function(req, res, next) {
   var confirm = req.body.confirm;
 
     //バリデート処理
+    //TODO:フラッシュメッセージが画面に出るように直す
   if(password !== confirm){
     res.render('setting',{
         title: "アカウント設定",
@@ -40,10 +40,14 @@ router.post('/', function(req, res, next) {
     return;
   }
 
-  //TODO : セッションで持っているidのカラムを書き換えるupdateに直す
-  knex.insert({ username, password: username, password }).into('users').then(function (rows) {
-      //セッティングページにリダイレクト
-      res.redirect('/setting');
+  //TODO : セッションで持っているuser_nameのカラムを書き換えるupdateに直す
+  //TODO : knexでのupdateの書き方と書き換えたいrowの検索の仕方をしらべる
+  knex.update({username, password: username, password })
+      .into('users')
+      .where('username',username)
+      .then(function (rows) {
+      //TODO:ログインページにリダイレクト、セッションは破棄する
+      res.redirect('/login');
       console.log(rows[0]);
     })
     .catch(function (error) {

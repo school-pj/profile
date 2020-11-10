@@ -12,6 +12,7 @@
 <div class="wrapper">
     <p class="main-title"><%= title %></p>
     <form action="/setting" method="post" class="board-form">
+        <p>ユーザー : <%= user_name %></p>
         <span class="label">新しいユーザー名 : </span><input type="text" name="username" class="input" required><br>
         <br>
         <span class="label">新しいパスワード : </span><input type="password" name="password" class="input" required><br>
