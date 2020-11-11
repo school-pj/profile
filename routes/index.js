@@ -27,7 +27,7 @@ router.get('/', function (req, res, next) {
         console.error(error)
       });
   } else {
-    res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name });
+    res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name,user_id: req.session.user_id });
   }
 });
 
@@ -56,7 +56,7 @@ router.get("/login", (req, res, next) => {
   res.render("login", { message: req.flash("message"), user_name: req.session.user_name});
 });
 
-//書き方
+
 router.post("/login", authenticate());
 
 //ログアウト処理
