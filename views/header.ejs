@@ -9,9 +9,9 @@
     <input type="button" onclick="location.href='users'" value="All Users">
     <select onChange="location.href=value;">
       <option value="">Option</option>
-      <option value="profile">My Profile</option>
-      <option value="setting">Setting</option>
-      <option value="logout">Logout</option>
+      <option value="/profile">My Profile</option>
+      <option value="/setting">Setting</option>
+      <option value="/logout">Logout</option>
     </select>
     <% }else{ %>
       <form action="/login" method="post" class="task-form">
