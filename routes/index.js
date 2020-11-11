@@ -37,7 +37,7 @@ router.post("/", (req, res, next) => {
   const content = req.body.content;
 
   knex('users')
-    .where({ user_name, password: user_name, password })
+    .where({ user_name: user_name, password: password })
     .update({ content: content })
     .then(function (rows) {
       res.redirect("/");
@@ -55,7 +55,6 @@ router.post("/", (req, res, next) => {
 router.get("/login", (req, res, next) => {
   res.render("login", { message: req.flash("message"), user_name: req.session.user_name});
 });
-
 
 router.post("/login", authenticate());
 
