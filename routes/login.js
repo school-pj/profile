@@ -41,7 +41,6 @@ passport.use(
           if (rows.length !== 0) {
             req.session.user_name = user_name;
             req.session.user_id = rows[0].id;
-            req.session.password = password;
             done(null, user_name);
           } else {
             done(
