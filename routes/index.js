@@ -44,7 +44,6 @@ router.post("/", (req, res, next) => {
     })
     .catch(function (error) {
       console.error(error);
-
       res.redirect("/");
     });
 

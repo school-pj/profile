@@ -20,7 +20,7 @@
       <button type="submit" class="submit">投稿</button>
     </form>
     <br>
-    <textarea readonly name="content" cols="50" rows="10"><%= contentList[0].content %></textarea>
+    <textarea readonly name="content" cols="50" rows="10"><%= contentList[user_id - 1].content %></textarea>
     <% }else{ %>
     <form action="/signup" method="get" class="task-form">
       <button type="submit" class="submit">Sign up</button>
