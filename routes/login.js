@@ -27,27 +27,37 @@ passport.deserializeUser((user_name,done) => {
 });
 
 //ユーザー名とパスワードを利用した認証
-passport.use("local-strategy",
-  new LocalStrategy({
-
-    usernameField: "username",
-    passwordField: "password",
-    passReqToCallback: true
-  }, (req, user_name, password, done) => {
-
-    knex("users")
-      .where({user_name, password: user_name, password })
-      .then(function (rows) {
-        //成功
-        if (rows.length !== 0) {
-          req.session.user_name = user_name;
-          req.session.user_id = rows[0].id;
-          done(null, user_name);
-        } else {
-          done(null, false, req.flash("message", "ユーザー名 または パスワード が間違っています。"));
-        }
-      });
-  }));
+passport.use(
+  "local-strategy",
+  new LocalStrategy(
+    {
+      usernameField: "username",
+      passwordField: "password",
+      passReqToCallback: true,
+    },
+    (req, user_name, password, done) => {
+      knex("users")
+        .where({ user_name, password: user_name, password })
+        .then(function (rows) {
+          //成功
+          if (rows.length !== 0) {
+            req.session.user_name = user_name;
+            req.session.user_id = rows[0].id;
+            done(null, user_name);
+          } else {
+            done(
+              null,
+              false,
+              req.flash(
+                "message",
+                "ユーザー名 または パスワード が間違っています。"
+              )
+            );
+          }
+        });
+    }
+  )
+);
 
 initialize = function () {
   return [
