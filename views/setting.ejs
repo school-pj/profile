@@ -6,17 +6,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="format-detection" content="telephone=no">
 <link rel='stylesheet' href='/stylesheets/style.css'>
+<%- include('header',{user_name:user_name}) %>
 </head>
 <body>
 <div class="wrapper">
     <p class="main-title"><%= title %></p>
     <form action="/setting" method="post" class="board-form">
+        <p>ユーザー : <%= user_name %></p>
         <span class="label">新しいユーザー名 : </span><input type="text" name="username" class="input" required><br>
         <br>
         <span class="label">新しいパスワード : </span><input type="password" name="password" class="input" required><br>
         <br>
         <span class="label">確認のためパスワードを再入力 : </span><input type="password" name="confirm" class="input" required><br>
-        <br>
+        <% if (message && message.length !== 0) { %>
+            <div class="alert alert-danger"><%=message %></div>
+            <% } %>
         <button type="submit" class="submit">OK</button>
     </form>
 </div>
