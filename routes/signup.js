@@ -15,7 +15,8 @@ var knex = require('knex')({
 
 router.get('/', function(req, res, next) {
   res.render('signup', {
-    title: '新規会員登録'
+    title: '新規会員登録',
+    user_name:req.session.user_name
   });
 });
 
