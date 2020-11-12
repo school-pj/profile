@@ -13,17 +13,17 @@ var knex = require('knex')({
 
 //View My Profileを押下時の処理
 router.get('/:user_id',
- function (req, res, next) {
-  knex
-    .select()
-    .from('users')
-    .then(function(rows) {
-      res.render('profile', {user_name: req.session.user_name,contentList: rows,user_id: req.session.user_id});
-    })
-    .catch(function(error) {
-    console.error(error)
+  function (req, res, next) {
+    knex
+      .from('users')
+      .innerJoin('relationships', 'users.id', 'relationships.id')
+      .then(function (rows) {
+        res.render('profile', { user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id , followed_id: req.session.followed_id, following_id: req.session.following_id});
+      })
+      .catch(function (error) {
+        console.error(error)
+      });
   });
-});
 
 
 //View My Profileを押下時の処理

@@ -42,11 +42,10 @@ router.get('/', function (req, res, next) {
 
 router.post("/", (req, res, next) => {
   const user_name = req.session.user_name;
-  const password = req.session.password;
   const content = req.body.content;
 
   knex('users')
-    .where({user_name, password: user_name, password })
+    .where({user_name: user_name })
     .update({ content: content })
     .then(function (rows) {
       res.redirect("/");
