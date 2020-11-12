@@ -16,18 +16,27 @@ var knex = require('knex')({
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+  //フォロー数、フォロワー数を表示するため、内部結合を行うように修正を行う。
+  //knex.js　内部結合のsql文
+  //select * from users inner join relationships on users.id = relationships.id
+  //例：knex.from('users').innerJoin('accounts', 'users.id', 'accounts.user_id')
   if (req.session.user_name) {
-    knex
-      .select()
+    // knex
+    //   .select()
+    //   .from('users')
+      knex
       .from('users')
+      .innerJoin('relationships','users.id','relationships.id')
       .then(function (rows) {
-        res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, password: req.session.password, contentList: rows});
+        req.session.followed_id = rows[0].followed_id;
+        req.session.following_id = rows[0].following_id;
+        res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id});
       })
       .catch(function (error) {
         console.error(error)
       });
   } else {
-    res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name, password: req.session.password });
+    res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name,user_id: req.session.user_id });
   }
 });
 
@@ -37,14 +46,13 @@ router.post("/", (req, res, next) => {
   const content = req.body.content;
 
   knex('users')
-    .where({ user_name, password: user_name, password })
+    .where({user_name, password: user_name, password })
     .update({ content: content })
     .then(function (rows) {
       res.redirect("/");
     })
     .catch(function (error) {
       console.error(error);
-
       res.redirect("/");
     });
 
@@ -53,8 +61,9 @@ router.post("/", (req, res, next) => {
 
 //ログイン処理
 router.get("/login", (req, res, next) => {
-  res.render("login", { message: req.flash("message"), user_name: req.session.user_name, password: req.session.password, id: req.session.id });
+  res.render("login", { message: req.flash("message"), user_name: req.session.user_name});
 });
+
 
 router.post("/login", authenticate());
 
