@@ -46,14 +46,13 @@ router.post("/", (req, res, next) => {
   const content = req.body.content;
 
   knex('users')
-    .where({ user_name, password: user_name, password })
+    .where({user_name, password: user_name, password })
     .update({ content: content })
     .then(function (rows) {
       res.redirect("/");
     })
     .catch(function (error) {
       console.error(error);
-
       res.redirect("/");
     });
 
