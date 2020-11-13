@@ -28,8 +28,15 @@ router.get('/', function (req, res, next) {
       .from('users')
       .innerJoin('relationships','users.id','relationships.id')
       .then(function (rows) {
-        req.session.followed_id = rows[0].followed_id;
-        req.session.following_id = rows[0].following_id;
+        let count = 0;
+        req.session.count = count;
+        if(req.session.count >= 1){
+          req.session.followed_id = rows[0].followed_id;
+          req.session.following_id = rows[0].following_id;
+        }else{
+          req.session.followed_id = req.session.count;
+          req.session.following_id = req.session.count;
+        };
         res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id});
       })
       .catch(function (error) {
