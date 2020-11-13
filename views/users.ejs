@@ -15,7 +15,7 @@
     <div class="wrapper">
       <p class="main-title"><%= title %></p>
         <% userlist.forEach(function(contentItem) { %>
-            <a href="/users/<%= contentItem.id %>">・<%= contentItem.user_name %><br></a>
+            <li href="/users/<%= contentItem.id %>">・<%= contentItem.user_name %></li><br>
         <% }); %>
     </div>
   </body>
