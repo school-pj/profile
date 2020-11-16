@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <%- include('header',{user_name: user_name, user_id: user_id}) %>
-  <title>My profile</title>
-</head>
-<body>
-  <p><%=user_name %></p>
-  <textarea readonly name="content" cols="50" rows="10"><%= contentList[0].content %></textarea>
-</body>
+
+  <head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('header',{user_name: user_name, user_id: user_id}) %>
+    <title>My profile</title>
+  </head>
+
+  <body>
+    <p><%=user_name %></p>
+    <p>フォロー<a href="/follows"><%=followed_id %></a></p>
+    <p>フォロワー<a href="/followers"><%=following_id %></a></p>
+    <textarea readonly name="content" cols="50" rows="10"><%= contentList[user_id - 1].content %></textarea>
+  </body>
+
 </html>
