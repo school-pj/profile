@@ -11,24 +11,23 @@ var knex = require('knex')({
   useNullAsDefault: true
 });
 
-//View My Profileを押下された時の処理
-router.get('/', function (req, res, next) {
-  //res.render("/profile/user_id");
-  knex
-    .select()
-    .from('users')
-    .then(function(rows) {
-      res.render('profile', {user_name: req.session.user_name,contentList: rows});
-    })
-    .catch(function(error) {
-    console.error(error)
+//View My Profileを押下時の処理
+router.get('/:user_id',
+  function (req, res, next) {
+    knex
+      .from('users')
+      .then(function (rows) {
+        res.render('profile', { user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id });
+      })
+      .catch(function (error) {
+        console.error(error)
+      });
   });
-});
 
 
-//View My Profileを押下された時の処理
-router.post('/', function (req, res, next) {
-  res.render("/profile/user_id");
+//View My Profileを押下時の処理
+router.post('/:user_id', function (req, res, next) {
+  res.render("profile");
 });
 
 

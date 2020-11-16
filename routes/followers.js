@@ -1,6 +1,6 @@
 var express = require('express');
-const { render } = require('../app');
 var router = express.Router();
+
 var knex = require('knex')({
   client: 'mysql',
   connection: {
@@ -13,15 +13,16 @@ var knex = require('knex')({
 });
 
 
-//フォロワー数リンクを押下された時の処理
-router.get('/', function (req, res, next) {
-  render("followers",)
+router.get('/followers', function (req, res, next) {
+  res.render('followers', {
+    title: 'フォロワー一覧ページ'
+  });
+});
+
+router.post('/followers', function (req, res, next) {
+
 
 });
 
-router.post('/', function (req, res, next) {
 
-});
-
-
-module.exports = router;w
+module.exports = router;
