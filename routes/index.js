@@ -22,35 +22,44 @@ router.get('/', function (req, res, next) {
   if (req.session.user_name) {
     knex
       .from('users')
-      .innerJoin('relationships','users.id','relationships.id')
-      .then(function(rows){
-        console.log(rows[0]);
-        let count = 0;
-        req.session.count = count;
-        if(req.session.count >= 1){
-          req.session.followed_id = rows[0].followed_id;
-          req.session.following_id = rows[0].following_id;
-        }else{
-          req.session.followed_id = req.session.count;
-          req.session.following_id = req.session.count;
-        };
-        res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id});
+      .innerJoin('relationships', 'users.id', 'relationships.id')
+      .then(function (rows) {
+        if (rows[req.session.user_id - 1] === undefined) {
+          const user_name = req.session.user_name;
+          const user_id = req.session.user_id;
+          
+          //フォローIDとフォロワーIDには0を入れて、他のカラム値情報を持ってくる。
+          knex
+            .from('users')
+            .where({ user_id: user_id , user_name: user_name })
+            .then(function (rows) {
+              console.log("処理通過！");
+              req.session.followed_id = 0;
+              req.session.following_id = 0;
+              res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id });
+            });
+        } else {
+          console.log(rows[0]);
+          req.session.followed_id = rows[req.session.user_id - 1].followed_id;
+          req.session.following_id = rows[req.session.user_id - 1].following_id;
+          res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id });
+        }
       })
       .catch(function (error) {
         console.error(error)
       });
   } else {
-    res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name,user_id: req.session.user_id });
+    res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name, user_id: req.session.user_id });
   }
 });
 
 router.post("/", (req, res, next) => {
   const user_name = req.session.user_name;
-  const user_id =  req.session.user_id;
+  const user_id = req.session.user_id;
   const content = req.body.content;
 
   knex('users')
-    .where({ id: user_id,user_name: user_name})
+    .where({ id: user_id, user_name: user_name })
     .update({ content: content })
     .then(function (rows) {
       res.redirect("/");
@@ -65,7 +74,7 @@ router.post("/", (req, res, next) => {
 
 //ログイン処理
 router.get("/login", (req, res, next) => {
-  res.render("login", { message: req.flash("message"), user_name: req.session.user_name});
+  res.render("login", { message: req.flash("message"), user_name: req.session.user_name });
 });
 
 router.post("/login", authenticate());
