@@ -15,19 +15,16 @@ var knex = require('knex')({
 
 
 /* GET home page. */
+//初期の状態では、relationshipsのほうには値が何も入っていないため、
+//usersテーブル情報を何も取ってこれない状態になっている。
+//そのため、内部結合で初期の状態でもusersテーブルの情報も持ってくるように実装が必要。
 router.get('/', function (req, res, next) {
-  //フォロー数、フォロワー数を表示するため、内部結合を行うように修正を行う。
-  //knex.js　内部結合のsql文
-  //select * from users inner join relationships on users.id = relationships.id
-  //例：knex.from('users').innerJoin('accounts', 'users.id', 'accounts.user_id')
   if (req.session.user_name) {
-    // knex
-    //   .select()
-    //   .from('users')
-      knex
+    knex
       .from('users')
       .innerJoin('relationships','users.id','relationships.id')
-      .then(function (rows) {
+      .then(function(rows){
+        console.log(rows[0]);
         let count = 0;
         req.session.count = count;
         if(req.session.count >= 1){
@@ -49,10 +46,11 @@ router.get('/', function (req, res, next) {
 
 router.post("/", (req, res, next) => {
   const user_name = req.session.user_name;
+  const user_id =  req.session.user_id;
   const content = req.body.content;
 
   knex('users')
-    .where({user_name: user_name })
+    .where({ id: user_id,user_name: user_name})
     .update({ content: content })
     .then(function (rows) {
       res.redirect("/");
@@ -69,7 +67,6 @@ router.post("/", (req, res, next) => {
 router.get("/login", (req, res, next) => {
   res.render("login", { message: req.flash("message"), user_name: req.session.user_name});
 });
-
 
 router.post("/login", authenticate());
 
