@@ -1,26 +1,28 @@
 var passport = require("passport");
-var express = require("express");
+var express = require('express');
 var router = express.Router();
 var LocalStrategy = require("passport-local").Strategy;
 var initialize, authenticate, authorize;
-var knex = require("knex")({
-  client: "mysql",
+var knex = require('knex')({
+  client: 'mysql',
   connection: {
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: "profileapp",
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'profileapp'
   },
-  useNullAsDefault: true,
+  useNullAsDefault: true
 });
 
+
 //サーバからクライアントに保存する処理
-passport.serializeUser((user_name, done) => {
+passport.serializeUser((user_name,done) => {
   done(null, user_name);
 });
 
+
 //クライアントからサーバに復元する処理
-passport.deserializeUser((user_name, done) => {
+passport.deserializeUser((user_name,done) => {
   done(null, user_name);
 });
 
@@ -58,20 +60,28 @@ passport.use(
 );
 
 initialize = function () {
-  return [passport.initialize(), passport.session()];
+  return [
+    passport.initialize(),
+    passport.session()
+  ];
 };
 
 //認証成功時処理
 authenticate = function () {
-  return passport.authenticate("local-strategy", {
+  return passport.authenticate(
+    "local-strategy", {
     successRedirect: "/",
-    failureRedirect: "/login",
-  });
+    failureRedirect: "/login"
+  }
+  );
 };
+
+
+
 
 module.exports = {
   initialize,
   authenticate,
   authorize,
-  router,
+  router
 };

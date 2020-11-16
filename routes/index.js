@@ -21,30 +21,29 @@ router.get('/', function (req, res, next) {
       .select()
       .from('users')
       .then(function (rows) {
-        res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, password: req.session.password, contentList: rows});
+        res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id});
       })
       .catch(function (error) {
         console.error(error)
       });
   } else {
-    res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name, password: req.session.password });
+    res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name,user_id: req.session.user_id });
   }
 });
 
 router.post("/", (req, res, next) => {
   const user_name = req.session.user_name;
-  const password = req.session.password;
+  const user_id =  req.session.user_id;
   const content = req.body.content;
 
   knex('users')
-    .where({ user_name, password: user_name, password })
+    .where({ id: user_id,user_name: user_name})
     .update({ content: content })
     .then(function (rows) {
       res.redirect("/");
     })
     .catch(function (error) {
       console.error(error);
-
       res.redirect("/");
     });
 
@@ -53,7 +52,7 @@ router.post("/", (req, res, next) => {
 
 //ログイン処理
 router.get("/login", (req, res, next) => {
-  res.render("login", { message: req.flash("message"), user_name: req.session.user_name, password: req.session.password, id: req.session.id });
+  res.render("login", { message: req.flash("message"), user_name: req.session.user_name});
 });
 
 router.post("/login", authenticate());
