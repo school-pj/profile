@@ -4,9 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>フォロワー一覧画面</title>
-  <%- include('header'%>
+  <%- include('header',{user_name: user_name, user_id: user_id}) %>
 </head>
 <body>
-  
+  <dl>
+  <% for(let i = 0;i < idList.length;i++) { %>
+    <dt><%= idList[i] %></dt>
+    <a href="/profile/<%=idList[i] %>"><dd><%= nameList[i] %></dd></a>
+  <% }; %>
+</dl>
 </body>
 </html>
