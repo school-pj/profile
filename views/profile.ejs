@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <%- include('header',{user_name: user_name, user_id: user_id}) %>
-  <title>My profile</title>
-</head>
-<body>
-  <p><%=user_name %></p>
-  <textarea readonly name="content" cols="50" rows="10"><%= contentList[user_id-1].content %></textarea>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('header',{user_name: user_name, user_id: user_id}) %>
+    <title>My profile</title>
+  </head>
+
+  <body>
+    <p><%=user_name %>
+    <% if(isotherspage){ %>
+      <form action="/users/<%= page_location %>" method="post">
+      <% if(isfollow){ %>
+         <button type="submit" class="submit">フォロー解除</button>
+     <% } else{ %>
+         <button type="submit" class="submit">フォロー</button>
+     <% } %> 
+      </form>
+   <% } %>
+    </p>
+    <textarea readonly name="content" cols="50" rows="10">
+<%= contentList[user_id-1].content %></textarea>
+  </body>
 </html>

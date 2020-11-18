@@ -15,7 +15,7 @@ var knex = require('knex')({
 
 //フォロワー数リンクを押下された時の処理
 router.get('/', function (req, res, next) {
-  render("followers",)
+  res.render("followers");
 
 });
 
@@ -24,4 +24,4 @@ router.post('/', function (req, res, next) {
 });
 
 
-module.exports = router;w
+module.exports = router;
