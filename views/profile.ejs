@@ -8,7 +8,11 @@
   <title>My profile</title>
 </head>
 <body>
+  <form action="/users" method="post">
   <p><%=user_name %></p>
-  <textarea readonly name="content" cols="50" rows="10"><%= contentList[user_id - 1].content %></textarea>
+  <p>フォロー<a href="/follows"><%=followed_id %></a></p>
+  <p>フォロワー<a href="/followers"><%=following_id %></a></p>
+  <textarea readonly name="content" cols="50" rows="10"><%= contentList[user_id-1].content %></textarea>
+  </form>
 </body>
 </html>
