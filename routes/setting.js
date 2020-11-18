@@ -15,7 +15,9 @@ var knex = require('knex')({
 
 router.get('/', function(req, res, next) {
   res.render('setting', {
-    title: 'アカウント設定'
+    title: 'アカウント設定',
+    user_name: req.session.user_name,
+    user_id: req.session.user_id
   });
 });
 
