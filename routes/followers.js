@@ -18,11 +18,13 @@ var knex = require('knex')({
 router.get('/', function (req, res, next) {
   req.session.array_id = [];
   req.session.array_name = [];
+  //ログインしているユーザーIDをもとに、内部結合を行っていない。
   knex
       .from('users')
       .innerJoin('relationships', 'users.id', 'relationships.following_id')
       .then(function (rows) {
-        //フォローされているIDをarray変数に格納し、ejs側でそのIDをもとに自分をフォローしているユーザーを表示する。
+        if(req.session.followed_id !== 0 && req.session.following_id !== 0){
+          //フォローされているIDをarray変数に格納し、ejs側でそのIDをもとに自分をフォローしているユーザーを表示する。
         for(var i = 0; i < rows.length; i++){
           req.session.array_id[i] = rows[i].following_id;
           req.session.array_name[i] = rows[i].user_name;
@@ -30,6 +32,9 @@ router.get('/', function (req, res, next) {
         console.log(req.session.array_id);
         console.log(req.session.array_name);
         res.render('followers', {title: 'followers', idList: req.session.array_id, nameList: req.session.array_name, user_name: req.session.user_name, user_id: req.session.user_id});
+        }else{
+          res.render('followers', {title: 'followers', idList: " ", nameList: " ", user_name: req.session.user_name, user_id: req.session.user_id});
+        }
       })
       .catch(function (error) {
         console.error(error)
