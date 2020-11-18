@@ -11,14 +11,14 @@ var knex = require('knex')({
   useNullAsDefault: true
 });
 
-//View My Profileを押下された時の処理
-router.get('/', function (req, res, next) {
-  //res.render("/profile/user_id");
+//View My Profileを押下時の処理
+router.get('/:user_id',
+ function (req, res, next) {
   knex
     .select()
     .from('users')
     .then(function(rows) {
-      res.render('profile', {user_name: req.session.user_name,contentList: rows});
+      res.render('profile', {user_name: req.session.user_name,contentList: rows,user_id: req.session.user_id});
     })
     .catch(function(error) {
     console.error(error)
@@ -26,9 +26,9 @@ router.get('/', function (req, res, next) {
 });
 
 
-//View My Profileを押下された時の処理
-router.post('/', function (req, res, next) {
-  res.render("/profile/user_id");
+//View My Profileを押下時の処理
+router.post('/:user_id', function (req, res, next) {
+  res.render("profile");
 });
 
 

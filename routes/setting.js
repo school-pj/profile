@@ -1,50 +1,53 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
-
-var knex = require("knex")({
-  client: "mysql",
+var knex = require('knex')({
+  client: 'mysql',
   connection: {
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: "profileapp",
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'profileapp'
   },
-  useNullAsDefault: true,
+  useNullAsDefault: true
 });
 
-router.get("/", function (req, res, next) {
-  if (req.session.id) {
-    res.render("setting", {
-      message: req.flash("message"),
-      title: "アカウント設定",
-      user_name: req.session.user_name,
-    });
-  } else {
-    res.redirect("login");
-  }
+
+
+router.get('/', function(req, res, next) {
+  res.render('setting', {
+    title: 'アカウント設定'
+  });
 });
 
-router.post("/", function (req, res, next) {
+
+router.post('/', function(req, res, next) {
   var username = req.body.username;
   var password = req.body.password;
   var confirm = req.body.confirm;
-  var user_id = req.session.user_id;
 
-  //バリデート処理
-  if (password !== confirm) {
-    req.flash("message", "パスワードが一致しません");
-    res.redirect("/setting");
-  } else {
-    knex("users")
-      .where({ id: user_id })
-      .update({ user_name: username, password: password })
-      .then(function (rows) {
-        res.redirect("/logout");
-        console.log(rows[0]);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+console.log("before_barridate");
+    //バリデート処理
+  if(password !== confirm){
+    console.log("barridate");
+    res.render('setting',{
+        title: "アカウント設定",
+        pass: 'パスワードが一致しません'
+    });
+    return;
   }
+  
+  //セッションで持っているidのカラムを書き換えるupdateに直す
+  knex.insert({ username, password: username, password }).into('users').then(function (rows) {
+      //セッティングページにリダイレクト
+      res.redirect('/setting');
+      console.log(rows[0]);
+    })
+    .catch(function (error) {
+
+      console.error(error)
+    });
 });
+
+
+
 module.exports = router;
