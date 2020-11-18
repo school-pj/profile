@@ -9,14 +9,17 @@
   </head>
 
   <body>
-    <p><%=user_name %></p>
+    <p><%=user_name %>
     <% if(isotherspage){ %>
-       <% if(isfollow){ %>
-          <input type="button" value="フォロー解除" />
-      <% } else{ %>
-          <input type="button" value="フォロー" />
-      <% } %> 
-    <% } %>
+      <form action="/users/<%= page_location %>" method="post">
+      <% if(isfollow){ %>
+         <button type="submit" class="submit">フォロー解除</button>
+     <% } else{ %>
+         <button type="submit" class="submit">フォロー</button>
+     <% } %> 
+      </form>
+   <% } %>
+    </p>
     <textarea readonly name="content" cols="50" rows="10">
 <%= contentList[user_id-1].content %></textarea>
   </body>

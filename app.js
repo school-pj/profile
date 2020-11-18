@@ -51,7 +51,7 @@ app.use('/users', usersRouter);
 app.use('/signup', signupRouter);
 app.use('/setting', settingRouter);  
 //app.use('/login', loginRouter);
-app.use('/profile', profileRouter);
+app.use('/users', profileRouter);
 app.use('/followers', followersRouter);
 
 // catch 404 and forward to error handler

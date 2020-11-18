@@ -14,16 +14,16 @@ var knex = require("knex")({
 //View My Profileを押下時の処理
 router.get("/:user_id", function (req, res, next) {
   req.session.array_id = [];
-  var location = req.url.slice(-1);
-  console.log(req.session.user_id);
-  console.log(location);
-  console.log(req.session.user_id != location);
-  knex
-    .from("users")
-    .innerJoin("relationships", "users.id", "relationships.followed_id")
+  req.session.location = req.params.user_id;
+  req.session.isfollow = false;
+  //ログイン中のユーザーidでフォローしているidをrelationshipsから取得する→array_id
+  //その配列の中に、現在見ているページのidが存在するか確認する。→isfollow
+  //今見ているプロフィールページ他人のページかどうかを判断する→isotherspage
+  knex("relationships")
+    .where({ followed_id: req.session.user_id, following_id: req.session.location })
     .then(function (rows) {
-      for (var i = 0; i < rows.length; i++) {
-        req.session.array_id[i] = rows[i].following_id;
+      if(rows.length >= 1){
+        req.session.isfollow = true;
       }
     });
   knex
@@ -34,19 +34,41 @@ router.get("/:user_id", function (req, res, next) {
         user_name: req.session.user_name,
         contentList: rows,
         user_id: req.session.user_id,
-        isotherspage: req.session.user_id != location,
-        isfollow: req.session.array_id.includes(location),
+        page_location: req.session.location,
+        isotherspage: req.session.user_id != req.session.location,
+        isfollow:req.session.isfollow,
       });
     })
-
     .catch(function (error) {
       console.error(error);
     });
 });
 
-//View My Profileを押下時の処理
-router.post("/:user_id", function (req, res, next) {
-  res.render("profile");
+//フォローorフォロー解除ボタン押下時の処理
+router.post("/:user_id", (req, res, next) => {
+  const followed_id = req.session.user_id;
+  const following_id = req.session.location;
+  if (req.session.isfollow) {
+    knex("relationships")
+      .where({ followed_id: followed_id, following_id: following_id })
+      .delete()
+      .then(function (rows) {
+        res.redirect(`/users/${req.session.location}`);
+      })
+      .catch(function (error) {
+        console.error(error);
+        res.redirect(`/users/${req.session.location}`);
+      });
+  } else {
+    knex("relationships")
+      .insert({ followed_id: followed_id, following_id: following_id })
+      .then(function (rows) {
+        res.redirect(`/users/${req.session.location}`);
+      })
+      .catch(function (error) {
+        console.error(error);
+        res.redirect(`/users/${req.session.location}`);
+      });
+  }
 });
-
 module.exports = router;
