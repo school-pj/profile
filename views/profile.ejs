@@ -1,14 +1,28 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
-  
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%- include('header',{user_name: user_name, user_id: user_id}) %>
   <title>My profile</title>
 </head>
+
 <body>
   <p><%=user_name %></p>
+  <%# いちばん外のifにはセッションのidとリンクのidは一致しないことを条件にする%>
+  <%# 内側のifはフォローしていないことを条件になるように%>
+  <%# else ifはフォローしているを条件になるように%>
+  <%# 実際の実装はprofile.js側でセッションのidでrelationshipsのデータの対して確認処理を行い、その戻り値のboolをejs側で使うことになる%>
+  <% if(){ %>
+    <% if(){ %>
+      <input type="button" value="フォロー" />
+    <% } else if(){ %>
+      <input type="button" value="フォロー解除" />
+    <% } %>
+  <% } %>
   <textarea readonly name="content" cols="50" rows="10"><%= contentList[user_id-1].content %></textarea>
 </body>
+
 </html>
