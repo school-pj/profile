@@ -1,4 +1,5 @@
 var express = require('express');
+const { render } = require('../app');
 var router = express.Router();
 var knex = require('knex')({
   client: 'mysql',
@@ -12,9 +13,7 @@ var knex = require('knex')({
 });
 
 
-/*内部結合を用いて、usersテーブルのidとrelationshipsテーブルのfollowing_idが一致する
-ものをrenderで渡してあげて、ejs側で表示するようにする。なぜか⇒フォローする際にフォローしたユーザーIDがfollowing_idの中に
-格納されるようになっているから。*/
+//フォロワー数リンクを押下された時の処理
 router.get('/', function (req, res, next) {
   req.session.array_id = [];
   req.session.array_name = [];
@@ -42,8 +41,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-  res.render("followers");
-
+  res.render('followers');
 });
 
 

@@ -10,7 +10,7 @@ var signupRouter = require('./routes/signup');
 var settingRouter = require('./routes/setting');
 var loginRouter = require('./routes/login');
 var profileRouter = require('./routes/profile');
-var followerRouter = require('./routes/followers');
+var followersRouter = require('./routes/followers');
 var flash = require("connect-flash");//メッセージ表示
 var bodyParser = require("body-parser");//認証情報の保存
 var cookieParser = require('cookie-parser');//認証情報の保存
@@ -41,12 +41,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(...loginRouter.initialize());//配列をカンマ区切りで割り当て
+app.use(...loginRouter.initialize());
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
-//app.use(passport.initialize());// 追加
-//app.use(passport.session());// 追加
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -54,7 +52,7 @@ app.use('/signup', signupRouter);
 app.use('/setting', settingRouter);  
 //app.use('/login', loginRouter);
 app.use('/users', profileRouter);
-app.use('/followers', followerRouter);
+app.use('/followers', followersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -4,7 +4,7 @@
   <head>
     <title>ProfileApp</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <%- include('header',{user_name: user_name, user_id: user_id}) %>
+      <%- include('header',{user_name: user_name, user_id: user_id}) %>
   </head>
 
   <body>
@@ -17,12 +17,14 @@
       <p>フォロー<a href="/follows"><%=followed_id %></a></p>
       <p>フォロワー<a href="/followers"><%=following_id %></a></p>
       <a href="/users/<%=user_id %>">View My Profile</a>
-      <p>自己紹介文</p>
-      <textarea name="content" cols="30" rows="5"></textarea>
+      <p>自己紹介文<br>
+        <textarea name="content" cols="30" rows="5"></textarea></p>
       <button type="submit" class="submit">投稿</button>
       <br>
       <textarea readonly cols="50" rows="10"><%= contentList[user_id - 1].content %></textarea>
     </form>
+    <br>
+    <textarea readonly name="content" cols="50" rows="10"><%= contentList[user_id - 1].content %></textarea>
     <% }else{ %>
     <form action="/signup" method="get" class="task-form">
       <button type="submit" class="submit">Sign up</button>

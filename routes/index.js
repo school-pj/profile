@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var { authenticate } = require("./login");
-
 var knex = require('knex')({
   client: 'mysql',
   connection: {
@@ -12,8 +11,6 @@ var knex = require('knex')({
   },
   useNullAsDefault: true
 });
-
-
 /* GET home page. */
 //初期の状態では、relationshipsのほうには値が何も入っていないため、
 //usersテーブル情報を何も取ってこれない状態になっている。
@@ -50,12 +47,10 @@ router.get('/', function (req, res, next) {
     res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name, user_id: req.session.user_id });
   }
 });
-
 router.post("/", (req, res, next) => {
   const user_name = req.session.user_name;
   const user_id = req.session.user_id;
   const content = req.body.content;
-
   knex('users')
     .where({ id: user_id, user_name: user_name})
     .update({ content: content })
@@ -66,17 +61,12 @@ router.post("/", (req, res, next) => {
       console.error(error);
       res.redirect("/");
     });
-
 });
-
-
 //ログイン処理
 router.get("/login", (req, res, next) => {
   res.render("login", { message: req.flash("message"), user_name: req.session.user_name });
 });
-
 router.post("/login", authenticate());
-
 //ログアウト処理
 router.get("/logout", function (req, res, next) {
   req.session.destroy(function (err) {
@@ -87,5 +77,4 @@ router.get("/logout", function (req, res, next) {
     }
   });
 });
-
 module.exports = router;
