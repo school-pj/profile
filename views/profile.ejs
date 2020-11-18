@@ -9,6 +9,6 @@
 </head>
 <body>
   <p><%=user_name %></p>
-  <textarea readonly name="content" cols="50" rows="10"><%= contentList[0].content %></textarea>
+  <textarea readonly name="content" cols="50" rows="10"><%= contentList[user_id - 1].content %></textarea>
 </body>
 </html>
