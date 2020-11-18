@@ -19,6 +19,7 @@ router.get("/", function (req, res, next) {
       res.render("users", {
         title: "All Users",
         user_name: req.session.user_name,
+        user_id: req.session.user_id,
         userlist: rows 
       });
     })
