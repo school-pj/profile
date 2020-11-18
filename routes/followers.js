@@ -29,7 +29,7 @@ router.get('/', function (req, res, next) {
         }
         console.log(req.session.array_id);
         console.log(req.session.array_name);
-        res.render('followers', {title: 'フォロワー一覧ページ', idList: req.session.array_id, nameList: req.session.array_name, user_name: req.session.user_name, user_id: req.session.user_id});
+        res.render('followers', {title: 'followers', idList: req.session.array_id, nameList: req.session.array_name, user_name: req.session.user_name, user_id: req.session.user_id});
       })
       .catch(function (error) {
         console.error(error)

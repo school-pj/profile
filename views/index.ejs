@@ -21,7 +21,7 @@
       <textarea name="content" cols="30" rows="5"></textarea>
       <button type="submit" class="submit">投稿</button>
       <br>
-      <textarea readonly name="content" cols="50" rows="10"><%= contentList[user_id - 1].content %></textarea>
+      <textarea readonly cols="50" rows="10"><%= contentList[user_id - 1].content %></textarea>
     </form>
     <% }else{ %>
     <form action="/signup" method="get" class="task-form">
