@@ -16,9 +16,6 @@ router.get("/:user_id", function (req, res, next) {
   req.session.array_id = [];
   req.session.location = req.params.user_id;
   req.session.isfollow = false;
-  //ログイン中のユーザーidでフォローしているidをrelationshipsから取得する→array_id
-  //その配列の中に、現在見ているページのidが存在するか確認する。→isfollow
-  //今見ているプロフィールページ他人のページかどうかを判断する→isotherspage
   knex("relationships")
     .where({ followed_id: req.session.user_id, following_id: req.session.location })
     .then(function (rows) {
