@@ -10,6 +10,7 @@ var signupRouter = require('./routes/signup');
 var settingRouter = require('./routes/setting');
 var loginRouter = require('./routes/login');
 var profileRouter = require('./routes/profile');
+var followsRouter = require('./routes/follows');
 var followersRouter = require('./routes/followers');
 var flash = require("connect-flash");//メッセージ表示
 var bodyParser = require("body-parser");//認証情報の保存
@@ -52,6 +53,7 @@ app.use('/signup', signupRouter);
 app.use('/setting', settingRouter);  
 //app.use('/login', loginRouter);
 app.use('/users', profileRouter);
+app.use('/follows', followsRouter);
 app.use('/followers', followersRouter);
 
 // catch 404 and forward to error handler
