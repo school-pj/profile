@@ -23,14 +23,15 @@ router.get("/:user_id", function (req, res, next) {
         req.session.isfollow = true;
       }
     });
-  knex
-    .select()
-    .from("users")
+  knex('users')
+    .where({id: req.params.user_id})
     .then(function (rows) {
+      console.log(rows);
+      console.log(rows[0].user_name);
       res.render("profile", {
-        user_name: req.session.user_name,
+        user_name: rows[0].user_name,
         contentList: rows,
-        user_id: req.session.user_id,
+        user_id: rows[0].id,
         page_location: req.session.location,
         isotherspage: req.session.user_id != req.session.location,
         isfollow:req.session.isfollow,

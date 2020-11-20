@@ -9,8 +9,10 @@
 <body>
   <h1><%= title %></h1>
   <dl>
-  <% for(let i = 0;i < user_idList.length;i++) { %>
+  <% for(let i = 0; i < user_idList.length; i++) { %>
+    <% if(user_nameList[i]) { %>
     <li><a href="/users/<%=user_idList[i] %>"><%= user_nameList[i] %></a></li><br>
+    <% }; %>
   <% }; %>
 </dl>
 </body>
