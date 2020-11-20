@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
   <head>
     <meta charset="UTF-8" />
 
@@ -10,17 +11,17 @@
 
   <body>
     <p><%=user_name %>
-    <% if(isotherspage){ %>
-      <form action="/users/<%= page_location %>" method="post">
+      <% if(isotherspage){ %>
+    <form action="/users/<%= page_location %>" method="post">
       <% if(isfollow){ %>
-         <button type="submit" class="submit">フォロー解除</button>
-     <% } else{ %>
-         <button type="submit" class="submit">フォロー</button>
-     <% } %> 
-      </form>
-   <% } %>
+      <button type="submit" class="submit">フォロー解除</button>
+      <% } else{ %>
+      <button type="submit" class="submit">フォロー</button>
+      <% } %>
+    </form>
+    <% } %>
     </p>
-    <textarea readonly name="content" cols="50" rows="10">
-<%= contentList[user_id-1].content %></textarea>
+    <textarea readonly name="content" cols="50" rows="10"><%= contentList[0].content %></textarea>
   </body>
+
 </html>

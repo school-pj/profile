@@ -26,8 +26,6 @@ router.get("/:user_id", function (req, res, next) {
   knex('users')
     .where({id: req.params.user_id})
     .then(function (rows) {
-      console.log(rows);
-      console.log(rows[0].user_name);
       res.render("profile", {
         user_name: rows[0].user_name,
         contentList: rows,
