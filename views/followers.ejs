@@ -8,11 +8,8 @@
 </head>
 <body>
   <h1><%= title %></h1>
-  <dl>
   <% for(let i = 0;i < idList.length;i++) { %>
-    <dt><%= idList[i] %></dt>
-    <a href="/users/<%=idList[i] %>"><dd><%= nameList[i] %></dd></a>
+    <a href="/users/<%=idList[i] %>"><li><%= nameList[i] %></li><br></a>
   <% }; %>
-</dl>
 </body>
 </html>
