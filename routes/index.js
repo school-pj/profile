@@ -12,49 +12,86 @@ var knex = require('knex')({
   useNullAsDefault: true
 });
 /* GET home page. */
-//初期の状態では、relationshipsのほうには値が何も入っていないため、
-//usersテーブル情報を何も取ってこれない状態になっている。
-//そのため、内部結合で初期の状態でもusersテーブルの情報も持ってくるように実装が必要。
 router.get('/', function (req, res, next) {
+  req.session.array_user_followed_id = [];
+  req.session.array_user_following_id = [];
   if (req.session.user_name) {
+    //新規登録したユーザーのfollowed_id,following_idに初期値0を持たせる処理(signupで新規登録時に実装する形にしたい)
     knex
+    .from('users')
+    .then(function (rows) {
+      const content = rows;
+      knex
       .from('users')
-      .innerJoin('relationships', 'users.id', 'relationships.id')
+      .innerJoin('relationships', 'users.id', 'relationships.followed_id')
       .then(function (rows) {
         if (rows[req.session.user_id - 1] === undefined) {
-          const user_name = req.session.user_name;
-          const user_id = req.session.user_id;
-          //フォローIDとフォロワーIDには0を入れて、他のカラム値情報を持ってくる。
+          req.session.followed_id = 0;
+          req.session.following_id = 0;
+          res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id });
+        } else {
+          //フォロワー数カウント処理
+          let count_following_id = 0;
+          let count_followed_id = 0;
           knex
             .from('users')
+            .innerJoin('relationships', 'users.id', 'relationships.followed_id')
             .then(function (rows) {
-              console.log("処理通過！");
-              req.session.followed_id = 0;
-              req.session.following_id = 0;
-              res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id });
-            });
-        } else {
-          console.log(rows[0]);
-          req.session.followed_id = rows[req.session.user_id - 1].followed_id;
-          req.session.following_id = rows[req.session.user_id - 1].following_id;
-          res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id });
+              for (var i = 0; i < rows.length; i++) {
+                if (req.session.user_id == rows[i].following_id) {
+                  req.session.array_user_followed_id = rows[i].followed_id;
+                  count_following_id++;
+                }
+              }
+              //フォロー数カウント処理
+              knex
+                .from("users")
+                .innerJoin("relationships", "users.id", "relationships.following_id")
+                .then(function (rows) {
+                  for (var i = 0; i < rows.length; i++) {
+                    if (req.session.user_id == rows[i].followed_id) {
+                      req.session.array_user_following_id = rows[i].following_id;
+                      count_followed_id++;
+                    }
+                  }
+                  res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: content, user_id: req.session.user_id, followed_id: count_followed_id, following_id: count_following_id });
+                })
+            })
         }
       })
       .catch(function (error) {
         console.error(error)
       });
+    });
   } else {
     res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name, user_id: req.session.user_id });
   }
 });
+    // knex
+    //   .from('users')
+    //   .innerJoin('relationships', 'users.id', 'relationships.followed_id')
+    //   .then(function (rows) {
+    //     if (rows[req.session.user_id - 1] === undefined) {
+    //       knex
+    //         .from('users')
+    //         .then(function (rows) {
+    //           console.log("処理通過！");
+    //           req.session.followed_id = 0;
+    //           req.session.following_id = 0;
+    //           res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id });
+    //         });
 router.post("/", (req, res, next) => {
   const user_name = req.session.user_name;
   const user_id = req.session.user_id;
   const content = req.body.content;
+  console.log(content);
+  console.log(user_name);
+  console.log(user_id);
   knex('users')
-    .where({ id: user_id, user_name: user_name})
+    .where({ id: user_id, user_name: user_name })
     .update({ content: content })
     .then(function (rows) {
+      console.log(rows);
       res.redirect("/");
     })
     .catch(function (error) {

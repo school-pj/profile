@@ -20,7 +20,7 @@ router.get("/", function (req, res, next) {
     .from("users")
     .innerJoin("relationships", "users.id", "relationships.following_id")
     .then(function (rows) {
-      if (req.session.followed_id.length !== 0 && req.session.following_id.length !== 0) {
+      if (req.session.followed_id !== 0 && req.session.following_id !== 0) {
         //フォローされているIDをarray変数に格納し、ejs側でそのIDをもとに自分をフォローしているユーザーを表示する。
         for (var i = 0; i < rows.length; i++) {
             if(req.session.user_id==rows[i].followed_id){
