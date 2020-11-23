@@ -23,10 +23,10 @@ router.get("/", function (req, res, next) {
       if (req.session.followed_id !== 0 && req.session.following_id !== 0) {
         //フォローされているIDをarray変数に格納し、ejs側でそのIDをもとに自分をフォローしているユーザーを表示する。
         for (var i = 0; i < rows.length; i++) {
-            if(req.session.user_id==rows[i].followed_id){
-          req.session.array_user_id[i] = rows[i].following_id;
-          req.session.array_user_name[i] = rows[i].user_name;
-            }
+          if (req.session.location == rows[i].followed_id) {
+            req.session.array_user_id[i] = rows[i].following_id;
+            req.session.array_user_name[i] = rows[i].user_name;
+          }
         }
         res.render("follows", {
           title: "follows",
@@ -35,7 +35,7 @@ router.get("/", function (req, res, next) {
           user_name: req.session.user_name,
           user_id: req.session.user_id,
         });
-        } else {
+      } else {
         res.render("follows", {
           title: "follows",
           user_idList: " ",
