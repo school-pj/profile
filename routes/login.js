@@ -1,5 +1,6 @@
 var passport = require("passport");
 var express = require('express');
+const bcrypt = require("bcrypt");
 var router = express.Router();
 var LocalStrategy = require("passport-local").Strategy;
 var initialize, authenticate, authorize;
@@ -37,10 +38,11 @@ passport.use(
     },
     (req, user_name, password, done) => {
       knex("users")
-        .where({ user_name, password: user_name, password })
-        .then(function (rows) {
+        .where({ user_name: user_name})
+        .then(async function (rows) {
+          const comparedPassword = await bcrypt.compare(password, rows[0].password);
           //成功
-          if (rows.length !== 0) {
+          if (comparedPassword) {
             req.session.user_name = user_name;
             req.session.user_id = rows[0].id;
             done(null, user_name);

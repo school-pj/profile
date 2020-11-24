@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const bcrypt = require("bcrypt");
 var knex = require('knex')({
   client: 'mysql',
   connection: {
@@ -20,7 +21,7 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', async function(req, res, next) {
   var user_name = req.body.username;
   var password = req.body.password;
   var confirm = req.body.confirm;
@@ -33,7 +34,11 @@ router.post('/', function(req, res, next) {
     });
     return;
   }
-  knex.insert({ user_name, password: user_name, password }).into('users').then(function (rows) {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  console.log(hashedPassword);
+  knex.insert({ user_name: user_name, password: hashedPassword })
+  .into('users')
+  .then(function (rows) {
       //メインページにリダイレクト
       res.redirect('/');
       console.log(rows[0]);
