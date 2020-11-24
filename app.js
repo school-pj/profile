@@ -52,7 +52,7 @@ app.use('/users', usersRouter);
 app.use('/signup', signupRouter);
 app.use('/setting', settingRouter);  
 //app.use('/login', loginRouter);
-app.use('/users', profileRouter);
+app.use('/:user_id', profileRouter);
 app.use('/follows', followsRouter);
 app.use('/followers', followersRouter);
 
