@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include('header',{user_name: user_name, user_id: user_id}) %>
   <title>フォロワーリスト</title>
 </head>
 <body>
   <h1><%= title %></h1>
-  <dl>
   <% for(let i = 0;i < idList.length;i++) { %>
-    <dt><%= idList[i] %></dt>
-    <a href="/users/<%=idList[i] %>"><dd><%= nameList[i] %></dd></a>
+    <a href="/users/<%=idList[i] %>"><li><%= nameList[i] %></li><br></a>
   <% }; %>
-</dl>
 </body>
 </html>
