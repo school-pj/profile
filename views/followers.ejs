@@ -6,6 +6,12 @@
   <title>フォロワーリスト</title>
 </head>
 <body>
-  <p>フォロワーページ</p>
+  <h1><%= title %></h1>
+  <dl>
+  <% for(let i = 0;i < idList.length;i++) { %>
+    <dt><%= idList[i] %></dt>
+    <a href="/users/<%=idList[i] %>"><dd><%= nameList[i] %></dd></a>
+  <% }; %>
+</dl>
 </body>
 </html>

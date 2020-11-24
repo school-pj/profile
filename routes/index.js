@@ -52,7 +52,7 @@ router.post("/", (req, res, next) => {
   const user_id = req.session.user_id;
   const content = req.body.content;
   knex('users')
-    .where({ id: user_id, user_name: user_name })
+    .where({ id: user_id, user_name: user_name})
     .update({ content: content })
     .then(function (rows) {
       res.redirect("/");
