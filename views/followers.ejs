@@ -8,12 +8,10 @@
 </head>
 <body>
   <h1><%= title %></h1>
-  <dl>
   <% for(let i = 0;i < idList.length;i++) { %>
     <% if(nameList[i]) { %>
     <a href="/users/<%=idList[i] %>"><li><%= nameList[i] %></li><br></a>
     <% } %>
   <% }; %>
-</dl>
 </body>
 </html>
