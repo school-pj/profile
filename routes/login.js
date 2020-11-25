@@ -1,5 +1,6 @@
 var passport = require("passport");
 var express = require('express');
+const bcrypt = require("bcrypt");
 var router = express.Router();
 var LocalStrategy = require("passport-local").Strategy;
 var initialize, authenticate, authorize;
@@ -16,13 +17,13 @@ var knex = require('knex')({
 
 
 //サーバからクライアントに保存する処理
-passport.serializeUser((user_name,done) => {
+passport.serializeUser((user_name, done) => {
   done(null, user_name);
 });
 
 
 //クライアントからサーバに復元する処理
-passport.deserializeUser((user_name,done) => {
+passport.deserializeUser((user_name, done) => {
   done(null, user_name);
 });
 
@@ -36,14 +37,26 @@ passport.use(
       passReqToCallback: true,
     },
     (req, user_name, password, done) => {
+      req.session.password = req.body.password;
       knex("users")
-        .where({ user_name, password: user_name, password })
-        .then(function (rows) {
-          //成功
-          if (rows.length !== 0) {
-            req.session.user_name = user_name;
-            req.session.user_id = rows[0].id;
-            done(null, user_name);
+        .where({ user_name: user_name })
+        .then(async function (rows) {
+          if (rows != "") {
+            const comparedPassword = await bcrypt.compare(password, rows[0].password);
+            if (comparedPassword) {
+              req.session.user_name = user_name;
+              req.session.user_id = rows[0].id;
+              done(null, user_name);
+            } else {
+              done(
+                null,
+                false,
+                req.flash(
+                  "message",
+                  "ユーザー名 または パスワード が間違っています。"
+                )
+              )
+            };
           } else {
             done(
               null,
