@@ -50,7 +50,7 @@ passport.use(
               false,
               req.flash(
                 "message",
-                "ユーザー名 または パスワード が間違っています。"
+                "The user name or password is incorrect."
               )
             );
           }
