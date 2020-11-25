@@ -9,7 +9,9 @@
 <body>
   <h1><%= title %></h1>
   <% for(let i = 0;i < idList.length;i++) { %>
+    <% if(nameList[i]) { %>
     <a href="/users/<%=idList[i] %>"><li><%= nameList[i] %></li><br></a>
+    <% } %>
   <% }; %>
 </body>
 </html>
