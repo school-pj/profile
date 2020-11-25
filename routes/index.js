@@ -30,7 +30,7 @@ router.get('/', function (req, res, next) {
             if (rows[req.session.user_id - 1] === undefined) {
               req.session.followed_id = 0;
               req.session.following_id = 0;
-              res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id });
+              res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: content, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id });
             } else {
               //フォロワー数カウント処理
               req.session.count_following_id = 0;
