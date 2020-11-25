@@ -19,6 +19,10 @@ router.get('/', function (req, res, next) {
   if (req.session.user_name) {
     //新規登録したユーザーのfollowed_id,following_idに初期値0を持たせる処理(signupで新規登録時に実装する形にしたい)
     knex
+    .from('users')
+    .then(function (rows) {
+      const content = rows;
+      knex
       .from('users')
       .then(function (rows) {
         const content = rows;
@@ -65,11 +69,11 @@ router.get('/', function (req, res, next) {
             console.error(error)
           });
       });
+    });
   } else {
     res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name, user_id: req.session.user_id });
   }
 });
-
 router.post("/", (req, res, next) => {
   const user_name = req.session.user_name;
   const user_id = req.session.user_id;
