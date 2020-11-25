@@ -10,7 +10,9 @@
   </head>
 
   <body>
-    <p><%=user_name %>
+    <p><%=user_name %></p>
+      <p>フォロー<a href="/follows"><%=followed_id %></a></p>
+      <p>フォロワー<a href="/followers"><%=following_id %></a></p>
       <% if(isotherspage){ %>
     <form action="/users/<%= page_location %>" method="post">
       <% if(isfollow){ %>
@@ -20,7 +22,6 @@
       <% } %>
     </form>
     <% } %>
-    </p>
     <textarea readonly name="content" cols="50" rows="10"><%= contentList[0].content %></textarea>
   </body>
 
