@@ -40,7 +40,7 @@ passport.use(
       knex("users")
         .where({ user_name: user_name})
         .then(async function (rows) {
-          if(rows != ""){
+          if(rows != "" && password == rows[0].password){
           const comparedPassword = await bcrypt.compare(password, rows[0].password);
           //成功
           if (comparedPassword) {
