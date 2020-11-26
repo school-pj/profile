@@ -95,7 +95,7 @@ router.post("/", (req, res, next) => {
 });
 //ログイン処理
 router.get("/login", (req, res, next) => {
-  res.render("login", { message: req.flash("message"), user_name: req.session.user_name });
+  res.render("login", { message: req.flash("message"), user_name: req.session.user_name, user_id: req.session.user_id });
 });
 router.post("/login", authenticate());
 //ログアウト処理
