@@ -15,6 +15,7 @@ var knex = require('knex')({
 router.get('/', function (req, res, next) {
   req.session.array_user_followed_id = [];
   req.session.array_user_following_id = [];
+  req.session.location = req.session.user_id;
   if (req.session.user_name) {
     //新規登録したユーザーのfollowed_id,following_idに初期値0を持たせる処理(signupで新規登録時に実装する形にしたい)
     knex
@@ -23,63 +24,56 @@ router.get('/', function (req, res, next) {
       const content = rows;
       knex
       .from('users')
-      .innerJoin('relationships', 'users.id', 'relationships.followed_id')
       .then(function (rows) {
-        if (rows[req.session.user_id - 1] === undefined) {
-          req.session.followed_id = 0;
-          req.session.following_id = 0;
-          res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id });
-        } else {
-          //フォロワー数カウント処理
-          let count_following_id = 0;
-          let count_followed_id = 0;
-          knex
-            .from('users')
-            .innerJoin('relationships', 'users.id', 'relationships.followed_id')
-            .then(function (rows) {
-              for (var i = 0; i < rows.length; i++) {
-                if (req.session.user_id == rows[i].following_id) {
-                  req.session.array_user_followed_id = rows[i].followed_id;
-                  count_following_id++;
-                }
-              }
-              //フォロー数カウント処理
+        const content = rows;
+
+        knex
+          .from('users')
+          .innerJoin('relationships', 'users.id', 'relationships.followed_id')
+          .then(function (rows) {
+            if (rows[req.session.user_id - 1] === undefined) {
+              req.session.followed_id = 0;
+              req.session.following_id = 0;
+              res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: content, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id });
+            } else {
+              //フォロワー数カウント処理
+              req.session.count_following_id = 0;
+              req.session.count_followed_id = 0;
               knex
-                .from("users")
-                .innerJoin("relationships", "users.id", "relationships.following_id")
+                .from('users')
+                .innerJoin('relationships', 'users.id', 'relationships.followed_id')
                 .then(function (rows) {
                   for (var i = 0; i < rows.length; i++) {
-                    if (req.session.user_id == rows[i].followed_id) {
-                      req.session.array_user_following_id = rows[i].following_id;
-                      count_followed_id++;
+                    if (req.session.location == rows[i].following_id) {
+                      req.session.array_user_followed_id = rows[i].followed_id;
+                      req.session.count_following_id++;
                     }
                   }
-                  res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: content, user_id: req.session.user_id, followed_id: count_followed_id, following_id: count_following_id });
+                  //フォロー数カウント処理
+                  knex
+                    .from("users")
+                    .innerJoin("relationships", "users.id", "relationships.following_id")
+                    .then(function (rows) {
+                      for (var i = 0; i < rows.length; i++) {
+                        if (req.session.location == rows[i].followed_id) {
+                          req.session.array_user_following_id = rows[i].following_id;
+                          req.session.count_followed_id++;
+                        }
+                      }
+                      res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: content, user_id: req.session.user_id, followed_id: req.session.count_followed_id, following_id: req.session.count_following_id });
+                    })
                 })
-            })
-        }
-      })
-      .catch(function (error) {
-        console.error(error)
+            }
+          })
+          .catch(function (error) {
+            console.error(error)
+          });
       });
     });
   } else {
     res.render('index', { title: 'Welcome to ProfileApp', user_name: req.session.user_name, user_id: req.session.user_id });
   }
 });
-    // knex
-    //   .from('users')
-    //   .innerJoin('relationships', 'users.id', 'relationships.followed_id')
-    //   .then(function (rows) {
-    //     if (rows[req.session.user_id - 1] === undefined) {
-    //       knex
-    //         .from('users')
-    //         .then(function (rows) {
-    //           console.log("処理通過！");
-    //           req.session.followed_id = 0;
-    //           req.session.following_id = 0;
-    //           res.render('index', { title: 'ProfileApp', user_name: req.session.user_name, contentList: rows, user_id: req.session.user_id, followed_id: req.session.followed_id, following_id: req.session.following_id });
-    //         });
 router.post("/", (req, res, next) => {
   const user_name = req.session.user_name;
   const user_id = req.session.user_id;
