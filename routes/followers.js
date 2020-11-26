@@ -30,9 +30,9 @@ router.get('/', function (req, res, next) {
             req.session.array_user_name[i] = rows[i].user_name;
           }
         }
-        res.render('followers', { title: 'followers', idList: req.session.array_user_id, nameList: req.session.array_user_name, user_name: req.session.user_name, user_id: req.session.user_id });
+        res.render('followers', { title: 'followers', user_idList: req.session.array_user_id, user_nameList: req.session.array_user_name, user_name: req.session.user_name, user_id: req.session.user_id });
       } else {
-        res.render('followers', { title: 'followers', idList: " ", nameList: " ", user_name: req.session.user_name, user_id: req.session.user_id });
+        res.render('followers', { title: 'followers', user_idList: "", user_nameList: "", user_name: req.session.user_name, user_id: req.session.user_id });
       }
     })
     .catch(function (error) {

@@ -38,8 +38,8 @@ router.get("/", function (req, res, next) {
       } else {
         res.render("follows", {
           title: "follows",
-          user_idList: " ",
-          user_nameList: " ",
+          user_idList: "",
+          user_nameList: "",
           user_name: req.session.user_name,
           user_id: req.session.user_id,
         });

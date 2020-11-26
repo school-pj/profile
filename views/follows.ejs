@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <%- include('header',{user_name: user_name, user_id: user_id}) %>
-  <title>Follows</title>
-</head>
-<body>
-  <h1><%= title %></h1>
-  <dl>
-  <% for(let i = 0; i < user_idList.length; i++) { %>
-    <% if(user_nameList[i]) { %>
-    <li><a href="/users/<%=user_idList[i] %>"><%= user_nameList[i] %></a></li><br>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('header',{user_name: user_name, user_id: user_id}) %>
+    <title>Follows</title>
+  </head>
+
+  <body>
+    <h1><%= title %></h1>
+    <% if(user_idList.length != "") { %>
+    <% for(let i = 0; i < user_idList.length; i++) { %>
+    <dl>
+      <li><a href="/users/<%=user_idList[i] %>"><%= user_nameList[i] %></a></li>
+      <br>
+    </dl>
     <% }; %>
-  <% }; %>
-</dl>
-</body>
+    <% }; %>
+  </body>
+
 </html>
