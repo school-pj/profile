@@ -30,7 +30,7 @@ router.post('/', async function(req, res, next) {
   if(password !== confirm){
     res.render('signup',{
         title: "Sign up",
-        pass: 'パスワードが一致しません'
+        pass: 'Password is incorrect'
     });
     return;
   }
