@@ -1,5 +1,4 @@
 var express = require('express');
-const { render } = require('../app');
 var router = express.Router();
 var knex = require('knex')({
   client: 'mysql',
@@ -30,7 +29,9 @@ router.get('/', function (req, res, next) {
             req.session.array_user_name[i] = rows[i].user_name;
           }
         }
-        res.render('followers', { title: 'followers', user_idList: req.session.array_user_id, user_nameList: req.session.array_user_name, user_name: req.session.user_name, user_id: req.session.user_id });
+        let array_user_id_filter = req.session.array_user_id.filter(v => v);
+        let array_user_name_filter = req.session.array_user_name.filter(v => v);
+        res.render('followers', { title: 'followers', user_idList: array_user_id_filter, user_nameList: array_user_name_filter, user_name: req.session.user_name, user_id: req.session.user_id });
       } else {
         res.render('followers', { title: 'followers', user_idList: "", user_nameList: "", user_name: req.session.user_name, user_id: req.session.user_id });
       }
