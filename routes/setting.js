@@ -33,7 +33,7 @@ console.log("before_barridate");
     console.log("barridate");
     res.render('setting',{
         title: "Setting",
-        pass: 'パスワードが一致しません'
+        pass: 'Password(retype) is incorrect'
     });
     return;
   }

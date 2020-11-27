@@ -11,8 +11,8 @@
 
   <body>
     <p><%=user_name %></p>
-      <p>フォロー<a href="/follows"><%=followed_id %></a></p>
-      <p>フォロワー<a href="/followers"><%=following_id %></a></p>
+      <p>Follows<a href="/follows"><%=followed_id %></a></p>
+      <p>Followers<a href="/followers"><%=following_id %></a></p>
       <% if(isotherspage){ %>
     <form action="/users/<%= page_location %>" method="post">
       <% if(isfollow){ %>
