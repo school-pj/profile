@@ -16,7 +16,7 @@ var knex = require('knex')({
 
 router.get('/', function(req, res, next) {
   res.render('signup', {
-    title: '新規会員登録',
+    title: 'Sing up',
     user_name:req.session.user_name
   });
 });
@@ -29,8 +29,8 @@ router.post('/', async function(req, res, next) {
   //バリデート処理
   if(password !== confirm){
     res.render('signup',{
-        title: "新規会員登録",
-        pass: 'パスワードが一致しません'
+        title: "Sign up",
+        pass: 'Password is incorrect'
     });
     return;
   }

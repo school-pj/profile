@@ -15,7 +15,7 @@ var knex = require('knex')({
 
 router.get('/', function(req, res, next) {
   res.render('setting', {
-    title: 'アカウント設定',
+    title: 'Setting',
     user_name: req.session.user_name,
     user_id: req.session.user_id
   });
@@ -32,8 +32,8 @@ console.log("before_barridate");
   if(password !== confirm){
     console.log("barridate");
     res.render('setting',{
-        title: "アカウント設定",
-        pass: 'パスワードが一致しません'
+        title: "Setting",
+        pass: 'Password(retype) is incorrect'
     });
     return;
   }
