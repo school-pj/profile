@@ -1,5 +1,4 @@
 var express = require("express");
-const { render } = require("../app");
 var router = express.Router();
 var knex = require("knex")({
   client: "mysql",
@@ -23,23 +22,25 @@ router.get("/", function (req, res, next) {
       if (req.session.followed_id !== 0 && req.session.following_id !== 0) {
         //フォローされているIDをarray変数に格納し、ejs側でそのIDをもとに自分をフォローしているユーザーを表示する。
         for (var i = 0; i < rows.length; i++) {
-          if (req.session.location == rows[i].followed_id) {
+          if (req.session.location === rows[i].followed_id) {
             req.session.array_user_id[i] = rows[i].following_id;
             req.session.array_user_name[i] = rows[i].user_name;
           }
         }
+        let array_user_id_filter = req.session.array_user_id.filter(v => v);
+        let array_user_name_filter = req.session.array_user_name.filter(v => v);
         res.render("follows", {
           title: "follows",
-          user_idList: req.session.array_user_id,
-          user_nameList: req.session.array_user_name,
+          user_idList: array_user_id_filter,
+          user_nameList: array_user_name_filter,
           user_name: req.session.user_name,
           user_id: req.session.user_id,
         });
       } else {
         res.render("follows", {
           title: "follows",
-          user_idList: " ",
-          user_nameList: " ",
+          user_idList: null,
+          user_nameList: null,
           user_name: req.session.user_name,
           user_id: req.session.user_id,
         });
