@@ -11,15 +11,20 @@
   </head>
 
   <body>
-    <h1><%= title %></h1>
-    <% if(user_idList.length != "") { %>
-    <% for(let i = 0;i < user_idList.length;i++) { %>
-    <dl>
-      <li><a href="/users/<%=user_idList[i] %>"><%= user_nameList[i] %></a></li>
-      <br>
-    </dl>
-    <% } %>
-    <% }; %>
+    <main role="main" class="container">
+      <div class="border-bottom mt-5 mb-5">
+        <h1><%= title %></h1>
+      </div>
+      <% for(let i = 0;i < idList.length;i++) { %>
+      <% if(nameList[i]) { %>
+      <h3>
+        <li><a href="/users/<%=idList[i] %>">
+            <%= nameList[i] %></a></li>
+      </h3><br>
+      <% } %>
+      <% }; %>
+      </dl>
+    </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
       crossorigin="anonymous"></script>
