@@ -1,10 +1,11 @@
-var passport = require("passport");
-var express = require("express");
-var bcrypt = require("bcrypt");
-var router = express.Router();
-var LocalStrategy = require("passport-local").Strategy;
-var initialize, authenticate, authorize;
+const passport = require("passport");
+const express = require('express');
+const bcrypt = require("bcrypt");
+const router = express.Router();
+const LocalStrategy = require("passport-local").Strategy;
+let initialize, authenticate, authorize;
 var knex = require("./db_connection.js").db_setting();
+
 
 //サーバからクライアントに保存する処理
 passport.serializeUser((user_name, done) => {

@@ -1,5 +1,5 @@
-var express = require("express");
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 var knex = require("./db_connection.js").db_setting();
 
 //フォロワー数リンクを押下された時の処理
@@ -13,10 +13,12 @@ router.get("/", function (req, res, next) {
     .then(function (rows) {
       //フォローされているIDをarray変数に格納し、ejs側でそのIDをもとに自分をフォローしているユーザーを表示する。
       if (req.session.followed_id !== 0 && req.session.following_id !== 0) {
-        for (var i = 0; i < rows.length; i++) {
+        for (let i = 0; i < rows.length; i++) {
           if (req.session.location == rows[i].following_id) {
             req.session.array_user_id[i] = rows[i].followed_id;
             req.session.array_user_name[i] = rows[i].user_name;
+
+            
           }
         }
         let array_user_id_filter = req.session.array_user_id.filter((v) => v);

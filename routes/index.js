@@ -1,13 +1,13 @@
-var express = require("express");
-var router = express.Router();
-var { authenticate } = require("./login");
+const express = require('express');
+const router = express.Router();
+const { authenticate } = require("./login");
 var knex = require("./db_connection.js").db_setting();
 /* GET home page. */
 router.get("/", function (req, res, next) {
   req.session.array_user_followed_id = [];
   req.session.array_user_following_id = [];
   req.session.location = req.session.user_id;
-  if (req.session.user_name) {
+  if (req.isAuthenticated()) {
     //新規登録したユーザーのfollowed_id,following_idに初期値0を持たせる処理(signupで新規登録時に実装する形にしたい)
     knex.from("users").then(function (rows) {
       const content = rows;
@@ -41,7 +41,7 @@ router.get("/", function (req, res, next) {
                   "relationships.followed_id"
                 )
                 .then(function (rows) {
-                  for (var i = 0; i < rows.length; i++) {
+                  for (let i = 0; i < rows.length; i++) {
                     if (req.session.location == rows[i].following_id) {
                       req.session.array_user_followed_id = rows[i].followed_id;
                       req.session.count_following_id++;
@@ -56,7 +56,7 @@ router.get("/", function (req, res, next) {
                       "relationships.following_id"
                     )
                     .then(function (rows) {
-                      for (var i = 0; i < rows.length; i++) {
+                      for (let i = 0; i < rows.length; i++) {
                         if (req.session.location == rows[i].followed_id) {
                           req.session.array_user_following_id =
                             rows[i].following_id;

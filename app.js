@@ -1,25 +1,25 @@
 var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
 //var passport = require('passport'); // 追記
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var signupRouter = require('./routes/signup'); 
-var settingRouter = require('./routes/setting');
-var loginRouter = require('./routes/login');
-var profileRouter = require('./routes/profile');
-var followsRouter = require('./routes/follows');
-var followersRouter = require('./routes/followers');
-var flash = require("connect-flash");//メッセージ表示
-var bodyParser = require("body-parser");//認証情報の保存
-var cookieParser = require('cookie-parser');//認証情報の保存
-var session = require('express-session');//認証情報の保存
-var passport = require('passport');//passport.jsのコア機能
-var sessionStore = new session.MemoryStore;
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const signupRouter = require('./routes/signup'); 
+const settingRouter = require('./routes/setting');
+const loginRouter = require('./routes/login');
+const profileRouter = require('./routes/profile');
+const followsRouter = require('./routes/follows');
+const followersRouter = require('./routes/followers');
+const flash = require("connect-flash");//メッセージ表示
+const bodyParser = require("body-parser");//認証情報の保存
+const cookieParser = require('cookie-parser');//認証情報の保存
+const session = require('express-session');//認証情報の保存
+const passport = require('passport');//passport.jsのコア機能
+const sessionStore = new session.MemoryStore;
 
-var app = express();
+const app = express();
 
 //　セッション情報設定 追加部分ここから                                                                                               
 app.use(cookieParser('secret'));

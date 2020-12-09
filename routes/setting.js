@@ -1,6 +1,7 @@
-var express = require("express");
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 var knex = require("./db_connection.js").db_setting();
+
 
 router.get("/", function (req, res, next) {
   res.render("setting", {
@@ -10,10 +11,11 @@ router.get("/", function (req, res, next) {
   });
 });
 
-router.post("/", function (req, res, next) {
-  var username = req.body.username;
-  var password = req.body.password;
-  var confirm = req.body.confirm;
+
+router.post('/', function(req, res, next) {
+  const username = req.body.username;
+  const password = req.body.password;
+  const confirm = req.body.confirm;
 
   console.log("before_barridate");
   //バリデート処理

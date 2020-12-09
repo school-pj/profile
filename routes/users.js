@@ -1,5 +1,5 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 var knex = require("./db_connection.js").db_setting();
 
 router.get("/", function (req, res, next) {
