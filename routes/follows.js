@@ -3,7 +3,7 @@ const router = express.Router();
 const knexfile = require("../knexfile.js");
 const knex = require("knex")(knexfile.development);
 
-//フォロー数リンクを押下された時の処理
+
 router.get("/", function (req, res, next) {
   req.session.array_user_id = [];
   req.session.array_user_name = [];
@@ -12,7 +12,6 @@ router.get("/", function (req, res, next) {
     .innerJoin("relationships", "users.id", "relationships.following_id")
     .then(function (rows) {
       if (req.session.followed_id !== 0 && req.session.following_id !== 0) {
-        //フォローされているIDをarray変数に格納し、ejs側でそのIDをもとに自分をフォローしているユーザーを表示する。
         for (let i = 0; i < rows.length; i++) {
           if (req.session.location === rows[i].followed_id) {
             req.session.array_user_id[i] = rows[i].following_id;

@@ -9,7 +9,6 @@ router.get("/", function (req, res, next) {
   req.session.array_user_following_id = [];
   req.session.location = req.session.user_id;
   if (req.isAuthenticated()) {
-    //新規登録したユーザーのfollowed_id,following_idに初期値0を持たせる処理(signupで新規登録時に実装する形にしたい)
     knex.from("users").then(function (rows) {
       const content = rows;
       knex.from("users").then(function (rows) {
@@ -31,7 +30,6 @@ router.get("/", function (req, res, next) {
                 following_id: req.session.following_id,
               });
             } else {
-              //フォロワー数カウント処理
               req.session.count_following_id = 0;
               req.session.count_followed_id = 0;
               knex
@@ -48,7 +46,6 @@ router.get("/", function (req, res, next) {
                       req.session.count_following_id++;
                     }
                   }
-                  //フォロー数カウント処理
                   knex
                     .from("users")
                     .innerJoin(
@@ -93,14 +90,10 @@ router.post("/", (req, res, next) => {
   const user_name = req.session.user_name;
   const user_id = req.session.user_id;
   const content = req.body.content;
-  console.log(content);
-  console.log(user_name);
-  console.log(user_id);
   knex("users")
     .where({ id: user_id, user_name: user_name })
     .update({ content: content })
     .then(function (rows) {
-      console.log(rows);
       res.redirect("/");
     })
     .catch(function (error) {
@@ -108,7 +101,7 @@ router.post("/", (req, res, next) => {
       res.redirect("/");
     });
 });
-//ログイン処理
+
 router.get("/login", (req, res, next) => {
   res.render("login", {
     message: req.flash("message"),
@@ -117,7 +110,7 @@ router.get("/login", (req, res, next) => {
   });
 });
 router.post("/login", authenticate());
-//ログアウト処理
+
 router.get("/logout", function (req, res, next) {
   req.session.destroy(function (err) {
     if (err) {

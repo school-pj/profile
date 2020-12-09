@@ -16,7 +16,6 @@ router.post("/", async function (req, res, next) {
   const password = req.body.password;
   const confirm = req.body.confirm;
 
-  //バリデート処理
   if (password !== confirm) {
     res.render("signup", {
       title: "Sign up",
@@ -25,14 +24,11 @@ router.post("/", async function (req, res, next) {
     return;
   }
   const hashedPassword = await bcrypt.hash(password, 10);
-  console.log(hashedPassword);
   knex
     .insert({ user_name: user_name, password: hashedPassword })
     .into("users")
     .then(function (rows) {
-      //メインページにリダイレクト
       res.redirect("/");
-      console.log(rows[0]);
     })
 
     .catch(function (error) {
