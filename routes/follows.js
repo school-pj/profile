@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-var knex = require("./db_connection.js").db_setting();
+const knexfile = require("../knexfile.js");
+const knex = require("knex")(knexfile.development);
 
 //フォロー数リンクを押下された時の処理
 router.get("/", function (req, res, next) {

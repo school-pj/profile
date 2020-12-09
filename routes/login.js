@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const LocalStrategy = require("passport-local").Strategy;
 let initialize, authenticate, authorize;
-var knex = require("./db_connection.js").db_setting();
+const knexfile = require("../knexfile.js");
+const knex = require("knex")(knexfile.development);
 
 
 //サーバからクライアントに保存する処理

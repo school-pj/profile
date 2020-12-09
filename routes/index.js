@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { authenticate } = require("./login");
-var knex = require("./db_connection.js").db_setting();
+const knexfile = require("../knexfile.js");
+const knex = require("knex")(knexfile.development);
 /* GET home page. */
 router.get("/", function (req, res, next) {
   req.session.array_user_followed_id = [];
