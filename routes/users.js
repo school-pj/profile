@@ -1,15 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const knex = require("knex")({
-  client: "mysql",
-  connection: {
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: "profileapp",
-  },
-  useNullAsDefault: true,
-});
+const knexfile = require("../knexfile.js");
+const knex = require("knex")(knexfile.development);
 
 router.get("/", function (req, res, next) {
   knex
@@ -20,7 +12,7 @@ router.get("/", function (req, res, next) {
         title: "All Users",
         user_name: req.session.user_name,
         user_id: req.session.user_id,
-        userlist: rows 
+        userlist: rows,
       });
     })
     .catch(function (error) {

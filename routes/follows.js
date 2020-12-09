@@ -1,15 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const knex = require("knex")({
-  client: "mysql",
-  connection: {
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: "profileapp",
-  },
-  useNullAsDefault: true,
-});
+const knexfile = require("../knexfile.js");
+const knex = require("knex")(knexfile.development);
 
 //フォロー数リンクを押下された時の処理
 router.get("/", function (req, res, next) {
@@ -27,8 +19,10 @@ router.get("/", function (req, res, next) {
             req.session.array_user_name[i] = rows[i].user_name;
           }
         }
-        let array_user_id_filter = req.session.array_user_id.filter(v => v);
-        let array_user_name_filter = req.session.array_user_name.filter(v => v);
+        let array_user_id_filter = req.session.array_user_id.filter((v) => v);
+        let array_user_name_filter = req.session.array_user_name.filter(
+          (v) => v
+        );
         res.render("follows", {
           title: "follows",
           user_idList: array_user_id_filter,
