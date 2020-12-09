@@ -20,7 +20,6 @@ router.post("/", async function (req, res, next) {
 
   //バリデート処理
   if (password !== confirm) {
-    console.log("barridate");
     res.render("setting", {
       title: "Setting",
       pass: "Password(retype) is incorrect",
