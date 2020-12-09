@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var knex = require('knex')({
+const express = require('express');
+const router = express.Router();
+const knex = require('knex')({
   client: 'mysql',
   connection: {
     host: 'localhost',
@@ -23,9 +23,9 @@ router.get('/', function(req, res, next) {
 
 
 router.post('/', function(req, res, next) {
-  var username = req.body.username;
-  var password = req.body.password;
-  var confirm = req.body.confirm;
+  const username = req.body.username;
+  const password = req.body.password;
+  const confirm = req.body.confirm;
 
 console.log("before_barridate");
     //バリデート処理

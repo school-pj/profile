@@ -1,10 +1,10 @@
-var passport = require("passport");
-var express = require('express');
+const passport = require("passport");
+const express = require('express');
 const bcrypt = require("bcrypt");
-var router = express.Router();
-var LocalStrategy = require("passport-local").Strategy;
-var initialize, authenticate, authorize;
-var knex = require('knex')({
+const router = express.Router();
+const LocalStrategy = require("passport-local").Strategy;
+let initialize, authenticate, authorize;
+const knex = require('knex')({
   client: 'mysql',
   connection: {
     host: 'localhost',

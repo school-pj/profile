@@ -1,6 +1,6 @@
-var express = require("express");
-var router = express.Router();
-var knex = require("knex")({
+const express = require("express");
+const router = express.Router();
+const knex = require("knex")({
   client: "mysql",
   connection: {
     host: "localhost",
@@ -32,7 +32,7 @@ router.get("/:user_id", function (req, res, next) {
     .from('users')
     .innerJoin('relationships', 'users.id', 'relationships.followed_id')
     .then(function (rows) {
-      for (var i = 0; i < rows.length; i++) {
+      for (let i = 0; i < rows.length; i++) {
         if (req.session.location == rows[i].following_id) {
           req.session.array_user_followed_id = rows[i].followed_id;
           req.session.count_following_id++;
@@ -43,7 +43,7 @@ router.get("/:user_id", function (req, res, next) {
         .from("users")
         .innerJoin("relationships", "users.id", "relationships.following_id")
         .then(function (rows) {
-          for (var i = 0; i < rows.length; i++) {
+          for (let i = 0; i < rows.length; i++) {
             if (req.session.location == rows[i].followed_id) {
               req.session.array_user_following_id = rows[i].following_id;
               req.session.count_followed_id++;
