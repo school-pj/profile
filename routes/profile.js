@@ -3,7 +3,7 @@ const router = express.Router();
 const knexfile = require("../knexfile.js");
 const knex = require("knex")(knexfile.development);
 
-//View My Profileを押下時の処理
+
 router.get("/:user_id", function (req, res, next) {
   req.session.count_following_id = 0;
   req.session.count_followed_id = 0;
@@ -22,7 +22,7 @@ router.get("/:user_id", function (req, res, next) {
         req.session.isfollow = true;
       }
     });
-  //フォロワー数カウント処理
+
   knex
     .from("users")
     .innerJoin("relationships", "users.id", "relationships.followed_id")
@@ -33,7 +33,7 @@ router.get("/:user_id", function (req, res, next) {
           req.session.count_following_id++;
         }
       }
-      //フォロー数カウント処理
+
       knex
         .from("users")
         .innerJoin("relationships", "users.id", "relationships.following_id")
@@ -65,7 +65,6 @@ router.get("/:user_id", function (req, res, next) {
     });
 });
 
-//フォローorフォロー解除ボタン押下時の処理
 router.post("/:user_id", (req, res, next) => {
   const followed_id = req.session.user_id;
   const following_id = req.session.location;

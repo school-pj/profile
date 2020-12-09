@@ -18,10 +18,7 @@ router.post('/', function(req, res, next) {
   const password = req.body.password;
   const confirm = req.body.confirm;
 
-  console.log("before_barridate");
-  //バリデート処理
   if (password !== confirm) {
-    console.log("barridate");
     res.render("setting", {
       title: "Setting",
       pass: "Password(retype) is incorrect",
@@ -29,14 +26,11 @@ router.post('/', function(req, res, next) {
     return;
   }
 
-  //セッションで持っているidのカラムを書き換えるupdateに直す
   knex
     .insert({ username, password: username, password })
     .into("users")
     .then(function (rows) {
-      //セッティングページにリダイレクト
       res.redirect("/setting");
-      console.log(rows[0]);
     })
     .catch(function (error) {
       console.error(error);
