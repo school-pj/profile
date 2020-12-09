@@ -1,6 +1,6 @@
-var express = require("express");
-var router = express.Router();
-var knex = require("knex")({
+const express = require("express");
+const router = express.Router();
+const knex = require("knex")({
   client: "mysql",
   connection: {
     host: "localhost",
@@ -21,7 +21,7 @@ router.get("/", function (req, res, next) {
     .then(function (rows) {
       if (req.session.followed_id !== 0 && req.session.following_id !== 0) {
         //フォローされているIDをarray変数に格納し、ejs側でそのIDをもとに自分をフォローしているユーザーを表示する。
-        for (var i = 0; i < rows.length; i++) {
+        for (let i = 0; i < rows.length; i++) {
           if (req.session.location === rows[i].followed_id) {
             req.session.array_user_id[i] = rows[i].following_id;
             req.session.array_user_name[i] = rows[i].user_name;

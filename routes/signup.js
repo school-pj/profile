@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const bcrypt = require("bcrypt");
-var knex = require('knex')({
+const knex = require('knex')({
   client: 'mysql',
   connection: {
     host: 'localhost',
@@ -22,9 +22,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', async function(req, res, next) {
-  var user_name = req.body.username;
-  var password = req.body.password;
-  var confirm = req.body.confirm;
+  const user_name = req.body.username;
+  const password = req.body.password;
+  const confirm = req.body.confirm;
 
   //バリデート処理
   if(password !== confirm){
