@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 const knexfile = require("../knexfile.js");
 const knex = require("knex")(knexfile.development);
-
 
 router.get("/", function (req, res, next) {
   res.render("setting", {
@@ -12,13 +12,12 @@ router.get("/", function (req, res, next) {
   });
 });
 
-
-router.post('/', function(req, res, next) {
+router.post("/", async function (req, res, next) {
   const username = req.body.username;
   const password = req.body.password;
   const confirm = req.body.confirm;
+  const user_id = req.session.user_id;
 
-  console.log("before_barridate");
   //バリデート処理
   if (password !== confirm) {
     console.log("barridate");
@@ -29,13 +28,14 @@ router.post('/', function(req, res, next) {
     return;
   }
 
-  //セッションで持っているidのカラムを書き換えるupdateに直す
-  knex
-    .insert({ username, password: username, password })
-    .into("users")
+  //passwordをハッシュ化してupdate
+  const hashedPassword = await bcrypt.hash(password, 10);
+  knex("users")
+    .where({ id: user_id})
+    .update({ user_name: username, password: hashedPassword })
     .then(function (rows) {
-      //セッティングページにリダイレクト
-      res.redirect("/setting");
+      //変更後のユーザー情報を再取得するためログアウトにリダイレクト
+      res.redirect("/logout");
       console.log(rows[0]);
     })
     .catch(function (error) {
