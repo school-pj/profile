@@ -27,6 +27,8 @@ router.get('/', function (req, res, next) {
           if (req.session.location == rows[i].following_id) {
             req.session.array_user_id[i] = rows[i].followed_id;
             req.session.array_user_name[i] = rows[i].user_name;
+
+            
           }
         }
         let array_user_id_filter = req.session.array_user_id.filter(v => v);
