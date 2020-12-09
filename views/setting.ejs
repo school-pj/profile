@@ -41,6 +41,9 @@
               <h4>New Password (retype)</h4>
             </label>
             <input required type="text" id="password" name="confirm" class="col-sm-6 form-control" />
+            <% if (message && message.length !== 0) { %>
+              <div class="alert alert-danger"><%=message %></div>
+              <% } %>
           </div>
           <input class="btn btn-primary" type="submit" value="Update" />
         </form>

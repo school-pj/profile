@@ -7,31 +7,29 @@ const knex = require("knex")(knexfile.development);
 router.get("/", function (req, res, next) {
   res.render("setting", {
     title: "Setting",
+    message: req.flash("message"),
     user_name: req.session.user_name,
     user_id: req.session.user_id,
   });
 });
 
 router.post("/", async function (req, res, next) {
-  const username = req.body.username;
+  const user_name = req.body.username;
   const password = req.body.password;
   const confirm = req.body.confirm;
   const user_id = req.session.user_id;
 
   //バリデート処理
   if (password !== confirm) {
-    res.render("setting", {
-      title: "Setting",
-      pass: "Password(retype) is incorrect",
-    });
-    return;
+    req.flash("message", "Password(retype) is incorrect");
+    res.redirect("/setting");
   }
 
   //passwordをハッシュ化してupdate
   const hashedPassword = await bcrypt.hash(password, 10);
   knex("users")
-    .where({ id: user_id})
-    .update({ user_name: username, password: hashedPassword })
+    .where({ id: user_id })
+    .update({ user_name: user_name, password: hashedPassword })
     .then(function (rows) {
       //変更後のユーザー情報を再取得するためログアウトにリダイレクト
       res.redirect("/logout");
