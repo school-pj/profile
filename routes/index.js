@@ -1,8 +1,19 @@
 const express = require('express');
 const router = express.Router();
+
+router.use('/', require('./index'));
+router.use('/users', require('./users'));
+router.use('/signup', require('./signup'));
+router.use('/setting', require('./setting'));
+router.use('/:user_id', require('./profile'));
+router.use('/follows', require('./follows'));
+router.use('/followers', require('./followers'));
+router.use(...require('./login').initialize());
+
 const { authenticate } = require("./login");
 const knexfile = require("../knexfile.js");
 const knex = require("knex")(knexfile.development);
+
 /* GET home page. */
 router.get("/", function (req, res, next) {
   req.session.array_user_followed_id = [];
