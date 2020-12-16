@@ -3,24 +3,41 @@ const express = require('express');
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const LocalStrategy = require("passport-local").Strategy;
-let initialize, authenticate, authorize;
 const knexfile = require("../knexfile.js");
 const knex = require("knex")(knexfile.development);
+const session = require('express-session');
+const User = require('../models/user.js');//モデル化したfindByIdメソッドの呼び出し
+const sessionStore = new session.MemoryStore;
 
-module.exports = function () {
-  router.use(passport.initialize());
-  router.use(passport.session());
+module.exports = function (app) {
+  app.use(session({
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
+    store: sessionStore,
+    saveUninitialized: true,
+    resave: 'true',
+    secret: 'secret'
+  }));
+
 
   //サーバからクライアントに保存する処理
-  passport.serializeUser((user_name, done) => {
-    done(null, user_name);
+  //ログイン時(strategy実行時にしか実行されない)
+  passport.serializeUser((user, done) => {
+    console.log("sirialize");
+    done(null, user.id);
   });
 
 
   //クライアントからサーバに復元する処理
-  passport.deserializeUser((user_name, done) => {
-    done(null, user_name);
-  });
+  //セッションの有効期間は機能可。req.userに値を入れる。
+  passport.deserializeUser((id, done) => {
+    console.log("deserialize");
+    try {
+      const user = User.findById(id);
+      done(null, user);
+    } catch (error) {
+      done(error, null);
+    }
+  })
 
   //ユーザー名とパスワードを利用した認証
   passport.use(
@@ -32,16 +49,13 @@ module.exports = function () {
         passReqToCallback: true,
       },
       (req, user_name, password, done) => {
-        req.session.password = req.body.password;
         knex("users")
           .where({ user_name: user_name })
           .then(async function (rows) {
             if (rows != "") {
               const comparedPassword = await bcrypt.compare(password, rows[0].password);
               if (comparedPassword) {
-                req.session.user_name = user_name;
-                req.session.user_id = rows[0].id;
-                done(null, user_name);
+                done(null, rows[0]);
               } else {
                 done(
                   null,
@@ -66,5 +80,8 @@ module.exports = function () {
       }
     )
   );
-
-}
+  //passport初期化
+  app.use(passport.initialize());
+  //req.userの更新
+  app.use(passport.session());
+};

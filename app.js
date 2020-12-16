@@ -6,19 +6,10 @@ const app = express();
 const flash = require("connect-flash");
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const sessionStore = new session.MemoryStore;
 
 app.use(flash());
 app.use(cookieParser('secret'));
 app.use(cookieParser());
-app.use(session({
-  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
-  store: sessionStore,
-  saveUninitialized: true,
-  resave: 'true',
-  secret: 'secret'
-}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -27,8 +18,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
+//ルーティングよりも先にパスポート実装
+require('./config/passport')(app);
 app.use('/',require('./routes'));
-require('./config/passport');
 
 app.use(function (req, res, next) {
   next(createError(404));
