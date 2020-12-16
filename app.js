@@ -2,15 +2,16 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
+const app = express();
 const flash = require("connect-flash");
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const passport = require('passport');
 const sessionStore = new session.MemoryStore;
-const app = express();
 
+app.use(flash());
 app.use(cookieParser('secret'));
+app.use(cookieParser());
 app.use(session({
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
   store: sessionStore,
@@ -18,24 +19,16 @@ app.use(session({
   resave: 'true',
   secret: 'secret'
 }));
-
-
-
-app.use(flash());
-
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(logger('dev'));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('routes',require('./routes'));
+app.use('/',require('./routes'));
+require('./config/passport');
 
 app.use(function (req, res, next) {
   next(createError(404));

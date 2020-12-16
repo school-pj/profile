@@ -1,16 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-router.use('/', require('./index'));
 router.use('/users', require('./users'));
 router.use('/signup', require('./signup'));
 router.use('/setting', require('./setting'));
+router.use('/login', require('./login'));
 router.use('/:user_id', require('./profile'));
 router.use('/follows', require('./follows'));
 router.use('/followers', require('./followers'));
-router.use(...require('./login').initialize());
 
-const { authenticate } = require("./login");
 const knexfile = require("../knexfile.js");
 const knex = require("knex")(knexfile.development);
 
@@ -112,15 +110,6 @@ router.post("/", (req, res, next) => {
       res.redirect("/");
     });
 });
-
-router.get("/login", (req, res, next) => {
-  res.render("login", {
-    message: req.flash("message"),
-    user_name: req.session.user_name,
-    user_id: req.session.user_id,
-  });
-});
-router.post("/login", authenticate());
 
 router.get("/logout", function (req, res, next) {
   req.session.destroy(function (err) {
