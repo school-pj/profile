@@ -9,6 +9,7 @@ router.get("/", function (req, res, next) {
     title: "Setting",
     user_name: req.user.user_name,
     user_id: req.user.id,
+    message: req.flash("message"),
   });
 });
 
