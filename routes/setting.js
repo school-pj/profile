@@ -7,9 +7,8 @@ const knex = require("knex")(knexfile.development);
 router.get("/", function (req, res, next) {
   res.render("setting", {
     title: "Setting",
-    message: req.flash("message"),
-    user_name: req.session.user_name,
-    user_id: req.session.user_id,
+    user_name: req.user.user_name,
+    user_id: req.user.id,
   });
 });
 

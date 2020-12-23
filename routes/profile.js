@@ -14,7 +14,7 @@ router.get("/:user_id", function (req, res, next) {
   req.session.isfollow = false;
   knex("relationships")
     .where({
-      followed_id: req.session.user_id,
+      followed_id: req.user.id,
       following_id: req.session.location,
     })
     .then(function (rows) {
@@ -53,7 +53,7 @@ router.get("/:user_id", function (req, res, next) {
             contentList: rows,
             user_id: rows[0].id,
             page_location: req.session.location,
-            isotherspage: req.session.user_id != req.session.location,
+            isotherspage: req.user.id != req.session.location,
             isfollow: req.session.isfollow,
             followed_id: req.session.count_followed_id,
             following_id: req.session.count_following_id,
@@ -66,7 +66,7 @@ router.get("/:user_id", function (req, res, next) {
 });
 
 router.post("/:user_id", (req, res, next) => {
-  const followed_id = req.session.user_id;
+  const followed_id = req.user.id;
   const following_id = req.session.location;
   if (req.session.isfollow) {
     knex("relationships")

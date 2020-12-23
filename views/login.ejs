@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <%- include('header',{user_name: user_name}) %>
-    <title>Login</title>
+      <title>Login</title>
   </head>
 
   <body>
@@ -38,9 +38,13 @@
               <input type="submit" class="btn btn-primary" value="Login" />
             </div>
           </div>
-          <% if (message && message.length !== 0) { %>
-          <div class="alert alert-danger"><%= message %></div>
-          <% } %>
+          <% if (message && message.length !==0) { %>
+            <% for(let i of message) { %>
+              <div class="alert alert-danger">
+                <%= i %>
+              </div>
+              <% } %>
+                <% } %>
         </form>
       </div>
     </main>
