@@ -18,6 +18,7 @@ module.exports = function (app) {
     resave: "true",
     secret: 'secret'
   }));
+
   //passport初期化
   app.use(passport.initialize());
   //req.userの更新
@@ -31,19 +32,19 @@ module.exports = function (app) {
         usernameField: "username",
         passwordField: "password",
       },
-      (req, user_name, password, done) => {
+      (user_name, password, done) => {
         knex("users")
           .where({ user_name: user_name })
           .then(async function (rows) {
-            if (rows.length != 0) {
+            if (rows.length !== 0) {
               const comparedPassword = await bcrypt.compare(password, rows[0].password);
               if (comparedPassword) {
                 done(null, rows[0]);
               } else {
-                return done(null, false, req.flash("message", "The user name or password is incorrect."));
+                return done(null, false, { message: "The user name or password is incorrect." });
               };
             } else {
-              return done(null, false, req.flash("message", "The user name or password is incorrect."));
+              return done(null, false, { message: "The user name or password is incorrect." });
             }
           });
       }
