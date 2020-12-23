@@ -7,7 +7,7 @@ const knex = require("knex")(knexfile.development);
 router.get("/", function (req, res, next) {
   res.render("signup", {
     title: "Sign up",
-    user_name: req.session.user_name,
+    user_name: req.user.user_name,
   });
 });
 
