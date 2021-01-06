@@ -17,15 +17,15 @@
           <%= title %>
         </h1>
       </div>
-      <% for(let i=0;i < user_idList.length;i++) { %>
-        <% if(user_nameList[i]) { %>
+      <% for(let following of followers) { %>
+        <% if(following) { %>
           <h3>
-            <li><a href="/users/<%=user_idList[i] %>">
-                <%= user_nameList[i] %>
-              </a></li>
+            <li><a href="/users/<%=following.followed_id %>">
+                <%= following.user_name %>
+              </a>
           </h3>
-          <br>
-          <% } %>
+          </li><br>
+          <% }; %>
             <% }; %>
               </dl>
     </main>
