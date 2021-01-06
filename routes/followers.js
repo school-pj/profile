@@ -31,8 +31,5 @@ router.get("/:user_id/followers", function (req, res, next) {
     });
 });
 
-router.post("/:user_id/followers", function (req, res, next) {
-  res.render("followers");
-});
 
 module.exports = router;

@@ -30,8 +30,5 @@ router.get("/:user_id/follows", function (req, res, next) {
     });
 });
 
-router.post("/:user_id/follows", function (req, res, next) {
-  res.render("follows");
-});
 
 module.exports = router;
