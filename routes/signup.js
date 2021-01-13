@@ -18,13 +18,13 @@ router.post("/", async function (req, res, next) {
   const confirm = req.body.confirm;
 
   if (password !== confirm) {
-    res.render('signup', { title: "Sign up",user_name: null,message: "The user name or password is incorrect." });
+    res.render('signup', { title: "Sign up",user_name: null,message: "The password is incorrect." });
   } else {
     await knex('users')
       .where({ user_name: user_name })
       .then(async function (rows) {
             if (rows.length !== 0) {
-              res.render('signup', { title: "Sign up",user_name: null,message: "Your username or email address is already registered." });
+              res.render('signup', { title: "Sign up",user_name: null,message: "The user name is already registered." });
             } else {
               const hashedPassword = await bcrypt.hash(password, 10);
               knex
