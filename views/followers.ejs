@@ -7,23 +7,27 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <%- include('header',{user_name: user_name, user_id: user_id}) %>
-    <title>Followers</title>
+      <title>Followers</title>
   </head>
 
   <body>
     <main role="main" class="container">
       <div class="border-bottom mt-5 mb-5">
-        <h1><%= title %></h1>
+        <h1>
+          <%= title %>
+        </h1>
       </div>
-      <% for(let i = 0;i < idList.length;i++) { %>
-      <% if(nameList[i]) { %>
-      <h3>
-        <li><a href="/users/<%=idList[i] %>">
-            <%= nameList[i] %></a></li>
-      </h3><br>
-      <% } %>
-      <% }; %>
-      </dl>
+      <% for(let following of followers) { %>
+        <% if(following) { %>
+          <h3>
+            <li><a href="/users/<%=following.followed_id %>">
+                <%= following.user_name %>
+              </a>
+          </h3>
+          </li><br>
+          <% }; %>
+            <% }; %>
+              </dl>
     </main>
     <%- include('partials/bootstrap.ejs'); %>
   </body>
