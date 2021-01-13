@@ -8,6 +8,7 @@ router.get("/", function (req, res, next) {
   res.render("signup", {
     title: "Sign up",
     user_name: null,
+    message: null
   });
 });
 
@@ -17,23 +18,27 @@ router.post("/", async function (req, res, next) {
   const confirm = req.body.confirm;
 
   if (password !== confirm) {
-    res.render("signup", {
-      title: "Sign up",
-      pass: "Password is incorrect",
-    });
-    return;
+    res.render('signup', { title: "Sign up",user_name: null,message: "The user name or password is incorrect." });
+  } else {
+    await knex('users')
+      .where({ user_name: user_name })
+      .then(async function (rows) {
+            if (rows.length !== 0) {
+              res.render('signup', { title: "Sign up",user_name: null,message: "Your username or email address is already registered." });
+            } else {
+              const hashedPassword = await bcrypt.hash(password, 10);
+              knex
+                .insert({ user_name: user_name, password: hashedPassword })
+                .into('users')
+                .then(function (rows) {
+                  res.redirect('/');
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+            }
+          })
   }
-  const hashedPassword = await bcrypt.hash(password, 10);
-  knex
-    .insert({ user_name: user_name, password: hashedPassword })
-    .into("users")
-    .then(function (rows) {
-      res.redirect("/");
-    })
-
-    .catch(function (error) {
-      console.error(error);
-    });
 });
 
 module.exports = router;
