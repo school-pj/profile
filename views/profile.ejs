@@ -15,8 +15,8 @@
         <h1>My profile</h1>
       </div>
       <h1><%=user_name %></h1>
-      <h5>Follows<a href="/follows"> <%=followed_id %></a></h5>
-      <h5>Followers<a href="/followers"> <%=following_id %></a></h5>
+      <h5>Follows<a href="/users/<%=user_id %>/follows"> <%=followed_id %></a></h5>
+      <h5>Followers<a href="/users/<%=user_id %>/followers"> <%=following_id %></a></h5>
       <% if(isotherspage){ %>
       <form action="/users/<%= page_location %>" method="post">
         <% if(isfollow){ %>

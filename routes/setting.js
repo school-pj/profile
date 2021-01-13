@@ -33,7 +33,6 @@ router.post("/", async function (req, res, next) {
     .then(function (rows) {
       //変更後のユーザー情報を再取得するためログアウトにリダイレクト
       res.redirect("/logout");
-      console.log(rows[0]);
     })
     .catch(function (error) {
       console.error(error);
