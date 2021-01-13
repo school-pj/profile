@@ -14,19 +14,31 @@
       <div class="border-bottom mt-5 mb-5">
         <h1>My profile</h1>
       </div>
-      <h1><%=user_name %></h1>
-      <h5>Follows<a href="/users/<%=user_id %>/follows"> <%=followed_id %></a></h5>
-      <h5>Followers<a href="/users/<%=user_id %>/followers"> <%=following_id %></a></h5>
-      <% if(isotherspage){ %>
-      <form action="/users/<%= page_location %>" method="post">
-        <% if(isfollow){ %>
-        <button type="submit" class="submit">Remove</button>
-        <% } else{ %>
-        <button type="submit" class="submit">Follow</button>
-        <% } %>
-      </form>
-      <% } %>
-      <textarea readonly name="content" cols="50" rows="10"><%= contentList[0].content %></textarea>
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>
+            <%=user_name %>
+          </h2>
+          <h5>Follows<a href="/users/<%=user_id %>/follows">
+              <%=followed_id %>
+            </a></h5>
+          <h5>Followers<a href="/users/<%=user_id %>/followers">
+              <%=following_id %>
+            </a></h5>
+          <% if(isotherspage){ %>
+            <form action="/users/<%= page_location %>" method="post">
+              <% if(isfollow){ %>
+                <button type="submit" class="submit">Remove</button>
+                <% } else{ %>
+                  <button type="submit" class="submit">Follow</button>
+                  <% } %>
+            </form>
+            <% } %>
+        </div>
+        <div class="col-sm-6">
+          <textarea readonly name="content" cols="50" rows="10"><%= contentList[0].content %></textarea>
+        </div>
+      </div>
     </main>
     <%- include('partials/bootstrap.ejs'); %>
   </body>
